@@ -1,0 +1,35 @@
+
+
+
+
+
+
+
+
+
+    #carousel figure:nth-child(1) {
+	  opacity:1;
+    }
+	
+	#carousel figure:nth-child(2) {
+	  opacity:0.7;
+    }
+	
+    #carousel figure:nth-child(3) {
+	  opacity:0.4;
+    }
+
+	
+	#carousel figure:nth-child(18) {
+	  opacity:0.4;
+    }
+    #carousel figure:nth-child(19) {
+	  opacity:0.7;
+    }
+	
+	#carousel figure:nth-child(20) {
+	   opacity:1;
+    }
+
+	
+	

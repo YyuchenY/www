@@ -1,0 +1,70 @@
+﻿<html>
+	<head>
+		<title>My first Three.js app</title>
+		<link rel="stylesheet" type="text/css" href="css/init.css">
+	</head>
+	<body>
+		
+		<script src="js/drag.js"></script>
+		
+		<script src="js/THREEx.GeometryUtils.js"></script>
+		
+		<script src="js/ThreeText.js"></script>
+		<script src="js/three.js"></script>
+		<script src="js/csg.js"></script>
+		<script src="js/ThreeCSG.js"></script>
+		<script src="js/TrackballControls.js"></script>
+		<script src="js/drag.js"></script>
+		<script src="js/Stats.js"></script>
+		<script src="fonts/helvetiker_bold.typeface.js"></script>
+		<script src="fonts/helvetiker_regular.typeface.js"></script>
+		<script src="fonts/optimer_bold.typeface.js"></script>
+		<script src="fonts/optimer_regular.typeface.js"></script>
+		<script src="fonts/gentilis_bold.typeface.js"></script>
+		<script src="fonts/gentilis_regular.typeface.js"></script>
+		<script src="js/FileSaver.js"></script>
+		<script src="js/axes.js"></script>
+		<script src="js/STLcreator.js"></script>
+		<script src="js/customize.js"></script>
+		<script src="js/STLLoader.js"></script>
+		<script src="js/STLreader.js"></script>
+		<script src="js/fundamental.js"></script>
+		
+		<div id='div1'>
+			
+				<div id='loading'>
+					<img id="img1" src='img/loading.png' />
+				</div> 
+		
+			<div id = "attribute">
+				<h1> 3D Model Attribute</h1>
+				Text1:<input type='text' id='custom1' onKeyPress="customize('text')" onKeyUp="customize('text')" value='Hello'/><p>
+				Text2:<input type='text' id='custom2' onKeyPress="customize('text')" onKeyUp="customize('text')" value='3Dink!'/><p>
+				Text3:<input type='text' id='custom3' onKeyPress="customize('text')" onKeyUp="customize('text')" value='from johnhckuo'/><p>
+				Size:<input type='text' id='textSize' onKeyPress="customize('size')" onKeyUp="customize('size')" value='50' /><p>
+				Thickness:<input type='text' id='textHeight' onKeyPress="customize('height')" onKeyUp="customize('height')" value='50'/><p>
+				Font-Family:<form name='myfont'>
+				<input type="radio"  name='font' onclick="customize('font');" value='gentilis' />Gentilis
+				<input type="radio"  name='font' onclick="customize('font');" value='helvetiker' checked />Helvetiker
+				<input type="radio"  name='font' onclick="customize('font');" value='optimer' />Optimer
+				</form><p>
+				Model Creator:
+				<input type='button' value='Cube' onclick='cubeCreator();'/>
+				<input type='button' value='Circle' onclick='sphereCreator();'/>
+				<input type='button' value='Cylinder' onclick='cylinder();'/><p>
+				RingText:<input type='text' id='ringText'/><p>
+				<input type='button' value='Ring Creator' onclick='ringCreator();'/>
+				<input type='button' value='STL' onclick='save();'/><p>
+				<input type='button' id='convert' value='JuJu Ring' onclick=" STLreader('1'); "/>
+				<input type='button' id='convert' value='Empty Ring' onclick=" STLreader('2'); "/>
+				<input type='button'  value='Paint' onclick=" reStart(); "/>
+				<input type='button'  value='Voxel' onclick=" voxelPainter(); "/>
+			</div>
+		</div>
+		<script>
+			init();
+			animate();
+		</script>
+	
+	</body>
+</html>
