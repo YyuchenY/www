@@ -5,7 +5,7 @@ function generateSTL(){
 
   stl = "solid pixel";
   for(var i = 0; i<tris.length; i++){
-	console.log(i);
+	
     stl += ("facet normal "+stringifyVector( tris[i].normal )+" \n");
     stl += ("outer loop \n");
     stl += stringifyVertex( vertices[ tris[i].a ] );

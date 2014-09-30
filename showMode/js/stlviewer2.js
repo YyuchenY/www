@@ -220,8 +220,7 @@
 					scene = new THREE.Scene();
 
 					camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-					camera.position.z = 70;
-					camera.position.y = 0;
+					camera.position.set(0,0,150);
 					scene.add( camera );
 
 					var directionalLight = new THREE.DirectionalLight( 0xFFFFFF );
@@ -231,7 +230,7 @@
 					directionalLight.position.normalize();
 					scene.add( directionalLight );
 
-					var xhr = new XMLHttpRequest();
+			/*		var xhr = new XMLHttpRequest();
 					xhr.onreadystatechange = function () {
 						if ( xhr.readyState == 4 ) {
 							if ( xhr.status == 200 || xhr.status == 0 ) {
@@ -255,7 +254,21 @@
 					//xhr.setRequestHeader("Accept","text/plain");
 					//xhr.setRequestHeader("Content-Type","text/plain");
 					//xhr.setRequestHeader('charset', 'x-user-defined');
-					xhr.send( null );
+					xhr.send( null );                                                                   */
+					
+					var loader = new THREE.STLLoader();
+					loader.addEventListener( 'load', function ( event ) {
+
+						var geometry = event.content;
+						var material = new THREE.MeshPhongMaterial( { ambient: 0xff5533, color: 0xff5533, specular: 0x111111, shininess: 200 } );
+						mesh = new THREE.Mesh( geometry, material );
+
+						mesh.position.set( 0, 0, 0 );
+						mesh.castShadow = true;
+						mesh.receiveShadow = true;
+						scene.add( mesh );
+					} );
+					loader.load( path );
 
 					renderer = new THREE.WebGLRenderer(); //new THREE.CanvasRenderer();
 					renderer.setSize( 1000, 1000 );
@@ -291,6 +304,7 @@
 					//mesh.rotation.x += 0.01;
 					if (mesh) {
 						mesh.rotation.z += 0.01;
+						mesh.rotation.x += 0.01;
 					}
 					//light1.position.z -= 1;
 					

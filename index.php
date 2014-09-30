@@ -1,20 +1,29 @@
-<html lang="zh-tw">
+<html lang="zh-tw" >
 <!DOCTYPE html>
 <meta charset="utf-8" />
 	<head>
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=0" /> 
+		<link rel="stylesheet" type="text/css" href="css/rollImprove.css" >
 		<link rel="stylesheet" type="text/css" href="css/fixbar.css" >
+		<link rel="stylesheet" type="text/css" media="screen and (max-width: 1299px)" href="css/fixbar1280x1024.css" >
+		<link rel="stylesheet" type="text/css" media="screen and (min-width: 1300px) and (max-width: 1399px)" href="css/fixbar1366x768.css" >
+		<link rel="stylesheet" type="text/css" media="screen and (min-width: 1400px) and (max-width: 1550px)" href="css/fixbar1440x900.css" >
+		<link rel="stylesheet" type="text/css" media="screen and (min-width: 1551px) and (max-width: 1899px)" href="css/fixbar1600x900.css" >
+		<link rel="stylesheet" type="text/css" media="screen and (min-width: 1900px)" href="css/fixbar1920x1080.css" >
 		<style type="text/css">
 			.index_frame{
 				position:relative;top:0;right:0;left:0;
 				margin-left:auto;
 				margin-right:auto;
 				width:1140px;
-				height:3000px;
-				background-image:url('img/bg.png');
+				height:3571px;
+				overflow:hidden;
+				background-image:url('img/bg.jpg');
 				background-size:1140px 100%;
 				background-repeat:no-repeat;
 				background-position:center;
+				border-left-style:solid;border-width: 5px;border-color:#999999;
+				border-right-style:solid;border-width: 5px;border-color:#999999;
 			}
 			
 			.backtothetop{
@@ -60,7 +69,19 @@
 				-webkit-border-radius: 7px;
 				border-radius: 7px;	
 			}
-
+			.ads_purchase{
+				position: absolute;
+				top: 3521px;
+				left: 70.5%;
+			}
+			.ads_purchase>a{
+				color:#ffffff;
+				text-decoration:none;
+				font-family: Microsoft JhengHei;
+				font-size: 18px;
+				font-weight: bold;
+				opacity: 0.9;
+			}
 		
 		</style>
 	</head>
@@ -68,8 +89,10 @@
 	<body style="overflow-x: hidden;margin:0 0 0 0 ;background-color:#333333;">
 		<?php $memberNo=0;?>
 		<div class='index_frame' id='frame'>
-			<div class='straightline'id='straightlineleft' style="float:left"></div>
-			<div class='straightline'id='straightlineright' style="float:right"></div>
+		<section class="container">
+					<div id="carousel">	</div>
+				
+		</section>
 			<div class="navbar navbar-fixed-top" id="headerlink">
 				<div class="navbar-inner" id="navbar-inner">
 					<div class="navcontainer" >
@@ -78,10 +101,10 @@
 							<li><input type="text" id='searchbox'  placeholder="搜尋" style="font-color:#a1a1a1" onkeydown="search()"></li>
 						</ul> 
 						<ul class="nav button">
-							<li><a href=".."><img src="img/forum.png"></a></li>
+							<li><a href="../three"><img src="img/forum.png"></a></li>
 							<li><a href="../jsstl-master/index.php"><img src="img/print.png"></a></li>
-							<li><a href="../displayPlatform/index.php"><img src="img/platform.png"></a></li>
-							<li><a href="../zhen/forum/forum_index.php"><img src="img/forum.png"></a></li>	
+							<li><a href="../newShowmode/index.php"><img src="img/platform.png"></a></li>
+							<li><a href=""><img src="img/forum.png"></a></li>	
 						</ul>
 						<span class="logo"><a href="../index.php"><img src="img/print_img/choose.png"></a></span>
 						<span class="nav uploadbutton" ><a href="/showMode/file_upload.php"><img src="img/upload.png"></a></span>
@@ -89,96 +112,35 @@
 				</div>
 			</div>
 			
-			
-			<p style='position:relative;color:red;opacity:0.8;font-size:40px;font-family:Microsoft JhengHei;font-weight: bold;top:140px;left:120px;'>標題測試文字</p>
-				<div class='folder_frame'>
-					
-				</div>
-			
-		<nav id="side-nav" role="navigation">
-			<ul>
-				<li><a class="pointnav href0" href="#headerlink" >head</a>
-				</li>
-				<li><a class="pointnav href1" href="#platformlink" >mid1</a>
-				</li>
-				<li><a class="pointnav href2" href="#printlink" >mid2</a>
-				</li>
-				<li><a class="pointnav href3" href="#forumlink" >mid3</a>
-				</li>
-				<li><a class="pointnav href4" href="#4" >bottom</a>
-				</li>
-			</ul>
-		</nav>
-			
+			<span class='platformlink' id='platformlink'><a href="/displayPlatform/index.php"><img src="img/print_img/choose.png"></a></span>
+			<span class='printlink' id='printlink'><a href="../jsstl-master/index.html"><img src="img/print_img/choose.png"></a></span>
+			<!--<nav id="side-nav" role="navigation">
+				<ul>
+					<li><a class="pointnav href0" href="#headerlink" >head</a>
+					</li>
+					<li><a class="pointnav href1" href="#platformlink" >mid1</a>
+					</li>
+					<li><a class="pointnav href2" href="#printlink" >mid2</a>
+					</li>
+					<li><a class="pointnav href3" href="#forumlink" >mid3</a>
+					</li>
+					<li><a class="pointnav href4" href="#4" >bottom</a>
+					</li>
+				</ul>
+			</nav>-->
+			<div class="ads_purchase"><a href="zhen/ads_purchase.php">廣告購買</a></div>
 		</div>	
-	<script type="text/javascript" src="js/search.js"></script>
-	<script type="text/javascript" src="http://demonstration.abgne.tw/jquery/jquery.easing.1.3.js"></script>
-	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script type="text/javascript">
-
-		document.getElementById("straightlineleft").style.height = document.getElementById("frame").clientHeight;
-		document.getElementById("straightlineright").style.height = document.getElementById("frame").clientHeight;
 		
-		$(function(){
-				$('a.href0').click(function(){
-					var $wholepage = (window.opera) ? (document.compatMode == "CSS1Compat" ? $('html') : $('body')) : $('html,body');
-					
-					$wholepage.animate({
-						scrollTop: $('#headerlink').offset().top //可+-運算，不可用50%等
-						//scrollTop:500
-					},1000);
-			
-					return false;
-				});
-		});
-		$(function(){
-				$('a.href1').click(function(){
-					var $wholepage = (window.opera) ? (document.compatMode == "CSS1Compat" ? $('html') : $('body')) : $('html,body');
-					
-					$wholepage.animate({
-						scrollTop: $('#platformlink').offset().top -300//可+-運算，不可用50%等
-						//scrollTop:500
-					},1000);
-			
-					return false;
-				});
-		});
-		$(function(){
-				$('a.href2').click(function(){
-					var $wholepage = (window.opera) ? (document.compatMode == "CSS1Compat" ? $('html') : $('body')) : $('html,body');
-					
-					$wholepage.animate({
-						scrollTop: $('#printlink').offset().top -250//可+-運算，不可用50%等
-						//scrollTop:500
-					},1000);
-			
-					return false;
-				});
-		});
-		$(function(){
-				$('a.href3').click(function(){
-					var $wholepage = (window.opera) ? (document.compatMode == "CSS1Compat" ? $('html') : $('body')) : $('html,body');
-					
-					$wholepage.animate({
-						scrollTop: $('#forumlink').offset().top -480//可+-運算，不可用50%等
-						//scrollTop:500
-					},1000);
-			
-					return false;
-				});
-		});
-		$(function(){
-				$('a.href4').click(function(){
-					var $wholepage = (window.opera) ? (document.compatMode == "CSS1Compat" ? $('html') : $('body')) : $('html,body');
-					
-					$wholepage.animate({
-						scrollTop: $('#4').offset().top//可+-運算，不可用50%等
-						//scrollTop:500
-					},1000);
-			
-					return false;
-				});
-			});
+		
+		
+		
+	<script type="text/javascript" src="js/search.js"></script>
+	
+	<script type="text/javascript" src="js/rollImprove.js"></script>
+	<script>
+		setInterval(function(){
+			onNavButtonClick(1);
+		},2500);
 	</script>
 			<!--<img src="img/bg.png" width=100% style="float:left;">-->
 	</body>

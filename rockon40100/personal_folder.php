@@ -9,26 +9,26 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<style type="text/css">
 		@-webkit-keyframes fadin {
-			0% { opacity: 1; }
-			20% { opacity: 0.9; }
-			40% { opacity: 0.7; }
-			60% { opacity: 0.5; }
-			80% { opacity: 0.3; }
+			0% { opacity: 0.8; }
+			20% { opacity: 0.7; }
+			40% { opacity: 0.5; }
+			60% { opacity: 0.3; }
+			80% { opacity: 0.1; }
 			100% { opacity: 0; }
 		}
 		@-webkit-keyframes fadout {
 			0% { opacity: 0; }
-			20% { opacity: 0.3; }
-			40% { opacity: 0.5; }
-			60% { opacity: 0.7; }
-			80% { opacity: 0.9; }
-			100% { opacity: 1; }
+			20% { opacity: 0.1; }
+			40% { opacity: 0.3; }
+			60% { opacity: 0.5; }
+			80% { opacity: 0.7; }
+			100% { opacity: 0.8; }
 		}
 		.folder_frame{
 			position:relative;
 			background-image:url(../img/frame.png);
-			background-size:940px 650px;
-			height:650px;
+			background-size:940px 700px;
+			height:700px;
 			width:940px;
 			margin:150px auto 0 auto;
 		}
@@ -37,7 +37,7 @@
 			background-image:url(../img/frame.png);
 			background-size:100% 100%;
 			float:left;
-			height:650px;
+			height:700px;
 			width:170px;
 			font-weight: bold;
 			font-size:24px;
@@ -83,7 +83,7 @@
 		.folder_content{
 			float:left;
 			width:750px;
-			height:600px;
+			height:700px;
 			*margin-top:20px;
 			margin-left:20px;
 			overflow-x:auto;
@@ -92,10 +92,10 @@
 			float:left;
 			text-align:center;
 		}
-		.folder_content>div>img:hover{
+		.folder_content>div>a>img:hover{
 			*opacity:1;
 		}
-		.folder_content>div>img{
+		.folder_content>div>a>img{
 			width:150px;
 			height:150px;
 			margin:10px 10px 10px 10px;
@@ -121,18 +121,80 @@
 			opacity: 0.3;
 		}
 		.picinfo{
-			position:absolute
-			width:200px;
-			height:150px;
-			background-color:white;
-			left:50px;
+			position:absolute;
+			*width:1000px;
+			*height:1000px;
+			top:-150px;
+			left:-100px;
+			background-color:rgba(0, 0, 0, 0.8);
 			-webkit-animation: none 1s;
+			font-family:Microsoft JhengHei;
+			font-weight: bold;
+			text-align:left;
+			-webkit-border-radius:5px;
+			z-index:1080;
 		}
 		.picinfo_hidden{
 			display:none;
 		}
+		.info{
+			width:400px;
+			*height:250px;
+			background-color:#ffffff;
+			-webkit-animation: none 1s;
+			font-family:Microsoft JhengHei;
+			font-weight: bold;
+			text-align:left;
+			padding:10px 10px 10px 10px;
+			margin:0px auto 0px auto;
+			opacity:1;
+		}
+		.infopic{
+			width:420px;
+			height:420px;
+			background-color:#ffffff;
+			margin:100px auto 0px auto;
+		}
+		.infopic>img{
+			width:400px;
+			height:400px;
+			margin:10px 10px 10px 10px;
+			opacity:1;
+		}
+		.pagenum{
+			display:block;
+			*width:100%;
+			color:#fed116;
+			margin-left:auto;
+			margin-right:auto;
+			font-family:Microsoft JhengHei;
+			cursor: pointer;
+		}
 	</style>
-	
+	<script language="JavaScript">
+		function http_request(obj){
+			var limit_value = 'limit_value='+obj*12;
+			var xhr = new XMLHttpRequest;
+				xhr.onreadystatechange = function(){
+				if (xhr.readyState == 4){
+					if(xhr.status==200)
+					{	
+						$('folder_content').innerHTML=xhr.responseText;
+					}	
+				}
+				
+			}
+				xhr.open("POST","folder_content.php"+location.search,true);
+				xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;");
+				xhr.send(limit_value);
+			
+		}
+		function change_page(obj){
+			
+			http_request(obj);
+		}
+		
+	</script>
 
 
 </head>
@@ -140,23 +202,21 @@
 <body style="overflow-x: hidden;margin:0 0 0 0 ;background-color:#333333;">
 
 	<div class='frame' id='frame'>
-		<div class='straightline'id='straightlineleft' style="float:left"></div>
-		<div class='straightline'id='straightlineright' style="float:right"></div>
-		<div class="navbar navbar-fixed-top" id='headerlink'>
-			<div class="navbar-inner" >
+		<div class="navbar navbar-fixed-top" id="headerlink">
+			<div class="navbar-inner" id="navbar-inner">
 				<div class="navcontainer" >
-					<?php include('../zhen/login_success.php')?>
+					<?php include('../zhen/login_success.php')  ?>
 					<ul class="nav searchbox">
 						<li><input type="text" id='searchbox'  placeholder="搜尋" style="font-color:#a1a1a1" onkeydown="search()"></li>
 					</ul> 
 					<ul class="nav button">
-						<li><a href=".."><img src="img/forum.png"></a></li>
-						<li><a href="../jsstl-master/index.php"><img src="../img/print.png"></a></li>
-						<li><a href="../displayPlatform/index.php"><img src="../img/platform.png"></a></li>
-						<li><a href="../zhen/forum/forum_index.php"><img src="../img/forum.png"></a></li>	
+						<li><a href="../three"><img src="img/forum.png"></a></li>
+						<li><a href="../jsstl-master/index.php"><img src="img/print.png"></a></li>
+						<li><a href="../newShowmode/index.php"><img src="img/platform.png"></a></li>
+						<li><a href=""><img src="img/forum.png"></a></li>	
 					</ul>
 					<span class="logo"><a href="../index.php"><img src="../img/print_img/choose.png"></a></span>
-					<span class="nav uploadbutton" ><a href="../showMode/file_upload.php"><img src="../img/upload.png"></a></span>
+					<span class="nav uploadbutton" ><a href="/showMode/file_upload.php"><img src="../img/upload.png"></a></span>
 				</div>
 			</div>
 		</div>
@@ -165,36 +225,34 @@
 			<div class='folder_name'>
 				<?php include('folder_name.php'); ?>
 			</div>
-			<div class='folder_content'>
+			<div  id='folder_content' class='folder_content' >
 				<?php include('folder_content.php'); ?>
+
 			</div>
 		</div>
 	</div>
 	<script type="text/javascript" src="../js/search.js"></script>
 	<script type="text/javascript">
-		document.getElementById("straightlineleft").style.height = document.getElementById("frame").clientHeight;
-		document.getElementById("straightlineright").style.height = document.getElementById("frame").clientHeight;
-		
-		
-		var divID = "picinfo";
+		//滑出說明
 		function CollapseExpand(obj) {
+			var divID = obj;
 			var divObject = document.getElementById(divID);
-			//var currentCssClass = divObject.className;
-			if (divObject.className == "picinfo"){
-				//divObject.className = "content_opacity";
+			console.log(divObject);
+			if(divObject.className == "picinfo_hidden"){
+				divObject.style.WebkitAnimationName = 'fadout';
+				divObject.style.width = document.getElementById("frame").clientWidth;
+				divObject.style.height = document.getElementById("frame").clientHeight;
+				divObject.className = "picinfo";
+			}
+			else if(divObject.className == "picinfo"){
 				divObject.style.WebkitAnimationName = 'fadin';
 				setTimeout(function () {  
 					divObject.className = "picinfo_hidden";
 				}, 1000);  
 			}
-			else{
-				divObject.style.WebkitAnimationName = 'fadout';
-				divObject.className = "picinfo";
-			}
+			
 		}
-		
-		
-		
+
 		var arr = document.getElementsByClassName("folder_namediv");
 
 		function $(id){
@@ -202,15 +260,9 @@
 		}
 		
 		(function rockon(item){
-		//	alert(item);
-			//alert(location.search);
 			var value = "<?php echo $_GET["folderNo"];?>";
-		//	var light=document.getElementById(value);
-			//	alert(value);
 				document.getElementById(value).style.color = "#fed116";
-			//	alert(value);
 				document.getElementById(value).style.opacity = 1;
-				//console.log(color.style.opacity);
 				
 		})();
 	</script>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>拖曳多檔案上傳</title>
 	<link rel="stylesheet" type="text/css" href="../css/fixbar.css">
-	
+	<script type="text/javascript" src="../js/search.js"></script>
 	<style>
     body {
         font-family:Microsoft JhengHei;
@@ -42,8 +42,9 @@
         -webkit-transition:all 1s;
 	}
 	.upload{
-        text-align:center;
-		width: 270px;
+		margin-left:20px;
+		text-align:center;
+		width: 540px;
 		height: 370px;
 		background: #4d4d4d;
         -webkit-border-top-left-radius:5px;
@@ -69,8 +70,8 @@
 
     #second img {
         position:relative;
-        width:300px;
-        height:360px;
+        width:270px;
+        height:330px;
         margin-top:0px;
         margin-left:0px;
         -webkit-border-top-left-radius:5px;
@@ -102,12 +103,17 @@
 
 	}
 	#confirm{
+		position:relative;
+		z-index:1100;
 		margin-top:50%;
 		margin-right:auto;
 		margin-left:auto ;
 		text-align: center;
+		
 	}
-
+	#confirm>input{
+		z-index:1100;
+	}
     #firstProgress{
         position:absolute;
         margin-bottom:0px;
@@ -145,16 +151,19 @@
 
         }
 	#secondnormData{
-		position:absolute;
-		top:50px;
-		left:70px;
-		margin-left: auto;
-		margin-right: auto;
+*		position:absolute;
+*		top:50px;
+*		left:70px;
+*		margin-left: auto;
+*		margin-right: auto;
 	}
 	#modelDisplay{
-		position:absolute;
-		left:-90px;
-		top:-50px;
+		position:relative;
+		left:0px;
+		top:0px;
+	}
+	#modelDisplay>canvas{
+		z-index:1;
 	}
 	#auzPrice{
 		width:50px;
@@ -191,23 +200,21 @@
 		}
 	?>
 	<div class='frame' id='frame'>
-		<div class='straightline' id='straightlineleft' style="float:left"></div>
-		<div class='straightline' id='straightlineright' style="float:right"></div>
-		<div class="navbar navbar-fixed-top" id='headerlink'>
-			<div class="navbar-inner" >
+		<div class="navbar navbar-fixed-top" id="headerlink">
+			<div class="navbar-inner" id="navbar-inner">
 				<div class="navcontainer" >
-					<?php include('../zhen/login_success.php')?>
+					<?php include('../zhen/login_success.php')  ?>
 					<ul class="nav searchbox">
 						<li><input type="text" id='searchbox'  placeholder="搜尋" style="font-color:#a1a1a1" onkeydown="search()"></li>
 					</ul> 
 					<ul class="nav button">
-							<li><a href=".."><img src="../img/forum.png"></a></li>
-							<li><a href="../jsstl-master/index.php"><img src="../img/print.png"></a></li>
-							<li><a href="../displayPlatform/index.php"><img src="../img/platform.png"></a></li>
-							<li><a href="../zhen/forum/forum_index.php"><img src="../img/forum.png"></a></li>	
+						<li><a href="../three"><img src="../img/forum.png"></a></li>
+						<li><a href="../jsstl-master/index.php"><img src="../img/print.png"></a></li>
+						<li><a href="../newShowmode/index.php"><img src="../img/platform.png"></a></li>
+						<li><a href=""><img src="../img/forum.png"></a></li>	
 					</ul>
 					<span class="logo"><a href="../index.php"><img src="../img/print_img/choose.png"></a></span>
-					<span class="nav uploadbutton" ><a href="../showMode/file_upload.php"><img src="../img/upload.png"></a></span>
+					<span class="nav uploadbutton" ><a href="/showMode/file_upload.php"><img src="../img/upload.png"></a></span>
 				</div>
 			</div>
 		</div>
@@ -243,6 +250,7 @@
 				是否有套件？(同一套建三種檔案名稱需相同)
 				<input type="radio" name="part" value="yes" />有
 				<input type="radio" name="part" value="no" checked />無</p>
+				2D圖檔<input type="file" name="normData2D"  id="secondnormData" />
 			</div>
 			
 			<div id ="first" class = "upload">
@@ -254,11 +262,11 @@
 				<div id = "modelDisplay"></div>
 			</div>
 			
-			<div id = "second" class = "upload">
+	<!--		<div id = "second" class = "upload">
 				<input type = "hidden" name="dragData[]" id="seconddragData"/ >
-				<br/>拖曳JPG 2D圖檔<input type="file" name="normData[]"  id="secondnormData" />
+				
 				<div id="secondProgress"></div>
-			</div>
+			</div>                      here-->
 			<!--<div id = "physical" class = "upload">
 				<input type = "hidden" name="dragData[]" id="physicaldragData"/ >
 				拖曳檔案<input type="file" name="normData[]"  id="physicalnormData" />
@@ -275,15 +283,13 @@
 		
 	</div>
 <script type="text/javascript" src="js/drag2.js" ></script>
-<script>
-			document.getElementById("straightlineleft").style.height = document.getElementById("frame").clientHeight +'px';
-			document.getElementById("straightlineright").style.height = document.getElementById("straightlineleft").style.height;
- </script>
 <script src="js/three.js"></script>
 <script src="js/stats.js"></script>
 <script src="js/detector.js"></script>
+<script src="js/STLLoader.js"></script>
 <script src="js/stlviewer.js"></script>
 <script src="js/uploadform.js"></script>
+<script type="text/javascript" src="../js/search.js"></script>
 
 </body>
 

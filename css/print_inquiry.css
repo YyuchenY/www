@@ -10,6 +10,8 @@
 	height:50px;
 	font-size:  xx-large;
 	font-family: 微軟正黑體;
+	color:#FFF;
+	opacity:0.9;
 }
 .order_status{	
 	z-index:1000;

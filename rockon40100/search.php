@@ -5,11 +5,6 @@
 	<head>
 		<title></title>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-		<script type="text/javascript">
-			$(window).resize(function(){
-				window.location.reload();
-			  });
-		</script>
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=0" /> 
 		<link rel=stylesheet type="text/css" href="../css/fixbar.css" >
 		<style type="text/css">
@@ -125,8 +120,6 @@
 
 <body style="overflow-x: hidden;margin:0 0 0 0 ;background-color:#333333;">
 	<div class='frame' id='frame'>
-		<div class='straightline'id='straightlineleft' style="float:left"></div>
-		<div class='straightline'id='straightlineright' style="float:right"></div>
 		<div class="navbar navbar-fixed-top" id='headerlink'>
 			<div class="navbar-inner" >
 				<div class="navcontainer" >
@@ -137,7 +130,7 @@
 					<ul class="nav button">
 							<li><a href=".."><img src="img/forum.png"></a></li>
 							<li><a href="../jsstl-master/index.php"><img src="img/print.png"></a></li>
-							<li><a href="../displayPlatform/index.php"><img src="img/platform.png"></a></li>
+							<li><a href="../newShowmode/index.php"><img src="img/platform.png"></a></li>
 							<li><a href="../zhen/forum/forum_index.php"><img src="img/forum.png"></a></li>	
 					</ul>
 					<span class="logo"><a href="../index.php"><img src="../img/print_img/choose.png"></a></span>
@@ -154,12 +147,6 @@
 		</div>
 	</div>
 		<script type="text/javascript" src="../js/search.js"></script>
-		<script type="text/javascript">
-
-			document.getElementById("straightlineleft").style.height = document.getElementById("frame").clientHeight;
-			document.getElementById("straightlineright").style.height = document.getElementById("straightlineleft").style.height;
-			
-		</script>
 	</body>
 
 </html>

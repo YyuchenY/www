@@ -4,13 +4,15 @@
 	margin-right:auto;
 	width:1140px;
 	height:auto!important;
-	height:980px;
-	min-height:980px;
+	height:920px;
+	min-height:920px;
 	background-image:url('../img/bgcolor.png');
 	background-size:1140px 100%;
 	background-repeat:no-repeat;
 	background-position:center;
 	overflow:hidden;
+	border-left-style:solid;border-width: 5px;border-color:#999999;
+	border-right-style:solid;border-width: 5px;border-color:#999999;
 }
 .straightline{
 	width:5px;
@@ -26,6 +28,18 @@
 	background-size:1140px 103px;
 	background-repeat:no-repeat;
 	background-position:center;
+	}
+
+.fixbarleft{
+	position:absolute;
+	top:0;
+	left:0;
+	}
+	
+.fixbarright{
+	position:absolute;
+	top:0;
+	right:0;
 	}
 	
 	

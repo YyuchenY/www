@@ -14,7 +14,7 @@
 		{
 			echo "<script language='javascript'>";
 			echo "alert('尚未登入，請重新登入');";	
-			echo "window.location.assign('../index.php');";
+			echo "window.location.assign('login.php');";
 			echo "</script>";
 			exit;
 		}
@@ -51,6 +51,7 @@
 			height: 500px;        
 			border: dashed 2px gray; 
 			position: absolute;
+			margin-top: 10px;
 			
 		}
 		#imgDIV{
@@ -65,56 +66,60 @@
 		}
 	</style>
 </head>
-<body style="overflow-x: hidden;background-image:url(../img/bgcolor.png); ">
-		<div class="navbar navbar-fixed-top" >
-		  <div class="navbar-inner" >
-			<div class='fixbarleft' id='fixbarleft'><img src='../img/fixbar_left.png'></div>
-			<div class="navcontainer" >
-				<?php include('login_success.php')?>
-				<ul class="nav searchbox">
-						<li><input type="text"  placeholder="搜尋" style="font-color:#a1a1a1"></li>
-				</ul>  
-				<ul class="nav button">
-					<li><a href=""><img src="../img/print.png"></a></li>
-					<li><a href="../displayPlatform/index.html"><img src="../img/platform.png"></a></li>
-					<li><a href="forum/forum_index.php"><img src="../img/forum.png"></a></li>
-				</ul>
-				<span class="logo"><a href="../index.php"><img src="../img/print_img/choose.png"></a></span>
-				<span class="nav uploadbutton" ><a href="../showMode/file_upload.php"><img src="../img/upload.png"></a></span>
-			</div>
-			<div class='fixbarright' id='fixbarright'><img src='../img/fixbar_right.png'></div>
-		  </div>
-		</div>
-		<div class='middle'>
-			<div class='middle_topDescription'>
-				<span style="float:right;">
-					<a href="javascript:void(0);" onclick="MM_openBrWindow('adsDescription.html','adsDescription','500','500')">說明</a>
-				</span>
-				<span>在3D印客上刊登廣告</span>			
-				<hr width='940px'>
-			</div>
-			<div class='middle_centreForm'>
-				<form method="post" action="ads_form.php" enctype="multipart/form-data">				
-					<span>購買週數：<input type='text' name='weeks' style='width: 20px;'>&nbsp;周</br></span>
-					<span>廣告的連結網址：<input type='text' name='adsUrl'></br></span>	
-					<div class='picture_upload'>	
-						<span>上傳圖片<input type="file" name="pic" id='pic' accept="image/jpeg" >尺寸100*500</span>
-							<input type = "hidden" name="dragData"  id='dragData' >
-							<div id="dropDIV" ondragover="dragoverHandler(event)" ondrop="dropHandler(event)">
-								或拖曳圖片到此處上傳
-								<div id="up_progress"></div>
-							</div>
-							<div id="imgDIV"></div>
+<body style="overflow-x: hidden;margin:0 0 0 0 ;background-color:#333333;">
+		<?php $memberNo=0;?>
+		<div class='frame' id='frame'>
+			<div class="navbar navbar-fixed-top" id="headerlink">
+				<div class="navbar-inner" id="navbar-inner">
+					<div class="navcontainer" >
+						<?php include('../zhen/login_success.php')  ?>
+						<ul class="nav searchbox">
+							<li><input type="text" id='searchbox'  placeholder="搜尋" style="font-color:#a1a1a1" onkeydown="search()"></li>
+						</ul> 
+						<ul class="nav button">
+							<li><a href="../three"><img src="img/forum.png"></a></li>
+							<li><a href="../jsstl-master/index.php"><img src="img/print.png"></a></li>
+							<li><a href="../newShowmode/index.php"><img src="img/platform.png"></a></li>
+							<li><a href=""><img src="img/forum.png"></a></li>	
+						</ul>
+						<span class="logo"><a href="../index.php"><img src="../img/print_img/choose.png"></a></span>
+						<span class="nav uploadbutton" ><a href="/showMode/file_upload.php"><img src="../img/upload.png"></a></span>
 					</div>
-				<div class='submit'>	
-					<input type='submit' value='送出'>
-					<input type='reset' value='取消 '>	
-				</div>	
-				</form>
+				</div>
 			</div>
-				
+			<div class='middle'>
+				<div class='middle_topDescription'>
+					<span style="float:right;">
+						<a href="javascript:void(0);" onclick="MM_openBrWindow('adsDescription.html','adsDescription','500','500')">說明</a>
+					</span>
+					<span>在3D印客上刊登廣告</span>			
+					<hr width='940px'>
+				</div>
+				<div class='middle_centreForm'>
+					<form method="post" action="ads_form.php" enctype="multipart/form-data">				
+						<span>購買週數：<input type='text' name='weeks' style='width: 20px;'>&nbsp;周</br></span>
+						<span>廣告的連結網址：<input type='text' name='adsUrl'></br></span>	
+						<div class='picture_upload'>	
+							<span>上傳圖片<input type="file" name="pic" id='pic' accept="image/jpeg" style="width: 200px;" >尺寸100*500</span>
+								<input type = "hidden" name="dragData"  id='dragData' >
+								<div id="dropDIV" ondragover="dragoverHandler(event)" ondrop="dropHandler(event)">
+									或拖曳圖片到此處上傳
+									<div id="up_progress"></div>
+								</div>
+								<div id="imgDIV"></div>
+						</div>
+					<div class='submit'>	
+						<input type='submit' value='送出'>
+						<input type='reset' value='取消 '>	
+					</div>	
+					</form>
+				</div>
+					
+			</div>
 		</div>
 	<script language="JavaScript" type="text/JavaScript"> 
+		document.getElementById("straightlineleft").style.height = document.getElementById("frame").clientHeight;
+		document.getElementById("straightlineright").style.height = document.getElementById("straightlineleft").style.height;
 		function MM_openBrWindow(theURL,winName,win_width,win_height) { 
 		  var PosX = (screen.width-win_width)/2; 
 		  var PosY = (screen.height-win_height)/2; 

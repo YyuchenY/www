@@ -13,16 +13,16 @@ function init(){
   $("first").addEventListener("dragleave",dragleave,false);
   $("first").addEventListener("dragover",dragover,false);
 
-  $("second").addEventListener("drop",drop,false);
-  $("second").addEventListener("dragenter",dragenter,false);
-  $("second").addEventListener("dragleave",dragleave,false);
-  $("second").addEventListener("dragover",dragover,false);
+ // $("second").addEventListener("drop",drop,false);
+ // $("second").addEventListener("dragenter",dragenter,false);
+ // $("second").addEventListener("dragleave",dragleave,false);
+ // $("second").addEventListener("dragover",dragover,false);
 
 
-  $("physical").addEventListener("drop",drop,false);
-  $("physical").addEventListener("dragenter",dragenter,false);
-  $("physical").addEventListener("dragleave",dragleave,false);
-  $("physical").addEventListener("dragover",dragover,false);
+ // $("physical").addEventListener("drop",drop,false);
+//  $("physical").addEventListener("dragenter",dragenter,false);
+ // $("physical").addEventListener("dragleave",dragleave,false);
+ // $("physical").addEventListener("dragover",dragover,false);
 
   }
 

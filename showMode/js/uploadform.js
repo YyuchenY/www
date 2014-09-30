@@ -67,7 +67,7 @@ function checkFields() {
 		alert('請輸入授權金額');
 		return false;
 	}
-	else if(authorization==1 && !(checkRegexp(auzPrice , /^[\-\+]?\d+$/ )) ){
+	else if(authorization==1 && !(checkRegexp(auzPrice , /^[\-\+]?\d+$/ )) &&!(checkLength( auzPrice, 1, 6 ))){
 		alert('請輸入正確金額');
 		return false;
 	}

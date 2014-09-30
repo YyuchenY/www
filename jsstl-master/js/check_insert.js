@@ -1,14 +1,34 @@
-function $(id){
-        return document.getElementById(id);
+ï»¿function checkLength( o, min, max ) {
+                        //if ( o.val().length > max || o.val().length < min ) {
+        if ( o.length > max || o.length < min ) {
+                return false;
+        } else {
+                return true;
         }
-var check_insert=function(){
-        if ($("receiverName").value == "" || $("receiverAddress").value == "" || $("receiverZip").value == "" || $("receiverTelephone").value == "") {
-        //¤§«áÀ³¸Ó·|¥Î¬õ¤¤¤§«e§ËªºªF¦è¨ÓÅã¥Ü¥¼¶ñ¼gªí®æ
-        alert("You do not fill something, please fill it.");
-        return false;
+}
+                
+function check_insert(){
+        var receiverName=document.getElementById("receiverName").value;
+        var receiverAddress=document.getElementById("receiverAddress").value;
+        var receiverTelephone=document.getElementById("receiverTelephone").value;
+        if (receiverName == "" ) {
+                alert("è«‹è¼¸å…¥æ”¶ä»¶äººå§“å");
+                return false;
+        }
+        else if(receiverTelephone==""){
+                alert("è«‹è¼¸å…¥æ”¶ä»¶äººé›»è©±");
+                return false;
+        }
+        else if(!(checkLength(receiverAddress, 10, 50 ))){
+                alert("è«‹è¼¸å…¥æ­£ç¢ºåœ°å€");
+                return false;
+        }
+        else if(!(checkLength(receiverName, 1, 10 ))){
+                 alert("æ”¶ä»¶äººæ‡‰å°‘æ–¼10å€‹å­—");
+                return false;
         }
         else{
-                alert("OK");
+                return true;
         }
 
 }

@@ -21,6 +21,87 @@ function $(id){
 	return document.getElementById(id);
 }
 
+
+function init (pictureNo,folderNo,categoryNo) {
+	imageRequest(pictureNo,folderNo,categoryNo);
+	panelCount=linkArr.length;
+	carouselBuilder();
+	
+
+
+	for (var i = 0 ; i < panelCount ; i++){
+		
+		temp = $("figure"+i);
+		temp.style.webkitTransform = arr[i];
+		temp.style.webkitTransition = "all 1s";
+		if (i==(count+dist+2)%arr.length){
+					currentIndex = i;
+					averageScore = Math.round(scoreArr[i]/ratenumberArr[i]);
+					for (var j = 0 ; j < averageScore ; j++){
+						child[j].setAttribute("style","-webkit-filter:grayscale(0%)");
+					}
+					$("starStat").innerHTML = "共 "+ratenumberArr[i]+" 筆評價"
+					$("optionBox"+i).style.opacity=1;
+					
+					var span=$('imageInfo'+i);
+					span.style.opacity='0.8';
+					span.innerHTML=nameArr[i];
+					temp.style['-webkit-filter']="grayscale(0)";
+					temp.className='nonopa';
+					var text = document.createElement("div");
+					
+					if(authorizePicArr[i]!='')
+					{
+						text.innerHTML="<span class='worksName'>"+nameArr[i]+"</span><span class='worksConcept'>設計理念</span><div class='worksInfo'>"+infoArr[i]+"</div><span class='worksAuthor'> 作者："+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</span><span class='worksPermission'>3D圖授權：$"+authorizePicArr[i]+"</span>";
+					}
+					else if(authorizePicArr[i]=='')
+					{
+						text.innerHTML="<span class='worksName'>"+nameArr[i]+"</span><span class='worksConcept'>設計理念</span><div class='worksInfo'>"+infoArr[i]+"</div><span class='worksAuthor'> 作者："+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</span><span class='worksPermission'>3D圖授權：未授權</span>";
+					}
+					$("info").appendChild(text);
+					$("text"+i).setAttribute("onclick","infoDrop()"); 
+					$("cube"+i).setAttribute("onclick","foldIn()"); 
+					$("print"+i).setAttribute("onclick","printRequest('"+link3DArr[i]+"')"); 
+
+					for (var j = 0 ; j<child.length ; j++){                                    //the rating system initializing
+						child[j].addEventListener('mouseover',prerate, false);
+						child[j].addEventListener('mouseout',derate, false);
+						child[j].addEventListener('click',ratingScore, false);
+				//		child[j].onmouseover= prerate;
+				//		child[j].onmouseout= derate(i);                  //need i to regenerate average score
+					//	child[j].onclick=ratingScore;
+					}
+					
+					
+					
+				}
+				else {
+					
+					$("optionBox"+i).style.opacity=0;
+					var span=$('imageInfo'+i);
+					span.style.opacity='0';
+					temp.style['-webkit-filter']="grayscale(1)";
+					temp.className='opa';
+					if ((i==(count+dist+1)%arr.length) || (i==(count+dist+3)%arr.length )){
+						temp.className='middleopa';
+					}
+				}
+				
+				
+				
+				
+	}
+	
+	
+//	var stars = $("starRating").getElementsByTagName("div");
+//	for (var i = (stars.length-1) ; i>=0 ; i--){
+//		stars[i].onclick=function (){ratingScore(event)};
+//	}
+	
+	
+}
+
+
 function onNavButtonClick(increment,flag){
 			
 			if  (flag == 1){

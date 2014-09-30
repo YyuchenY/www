@@ -14,7 +14,7 @@
 		  });
 	</script>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=0" /> 
-	<link rel="stylesheet" type="text/css" href="css/fixbar.css" >
+	<link rel="stylesheet" type="text/css" href="css/fixbar_ex.css" >
 	<link rel="stylesheet" type="text/css" media="screen and (max-width: 1299px)" href="css/fixbar1280x1024.css" >
 	<link rel="stylesheet" type="text/css" media="screen and (min-width: 1300px) and (max-width: 1399px)" href="css/fixbar1366x768.css" >
 	<link rel="stylesheet" type="text/css" media="screen and (min-width: 1400px) and (max-width: 1550px)" href="css/fixbar1440x900.css" >

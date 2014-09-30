@@ -2,15 +2,16 @@ var check = 0 ;
 var pioneerCube;
 var voxelNumber = 0 , voxelCoordinate = [] , voxel = [];
 var voxelX , voxelY , voxelZ;
+var currentObject = [] , objectOffset = [],voxelFlag = 0,paintFlag=0 , tubePosition = [];
+var universalFlag=0;   //for 關閉模式 開啟模式
 function customize(category) {
 	
-	var textGeom, textGeom2, textGeom3, material;
+	var textGeom, material;
 	
 	if (category == "text"){
 		
-		custom[0] = $('custom1').value;
-		custom[1] = $('custom2').value;
-		custom[2] = $('custom3').value;
+		custom = document.getElementById('custom').value;
+
 		//var custom =  e.keyCode;
 		
 
@@ -21,7 +22,6 @@ function customize(category) {
 		for (var i =0;i<radios.length ; i++){
 			if (radios[i].checked){
 				textColor=radios[i].value;
-				console.log(textColor);
 				break;
 			}
 		}
@@ -32,7 +32,6 @@ function customize(category) {
 		for (var i =0;i<radios.length ; i++){
 			if (radios[i].checked){
 				textFont=radios[i].value;
-				console.log(textFont);
 				break;
 			}
 		}
@@ -41,101 +40,138 @@ function customize(category) {
 	}else if (category == 'height'){	
 		textHeight = $('textHeight').value;
 	}
+
+	scene.remove (textMesh);
 	
-	
-	for (var i=0; i<3 ; i++){
-		scene.remove (textMesh[i]);
-	
-		material = new THREE.MeshPhongMaterial({
-				color: textColor
-		});
-		textGeom = new THREE.TextGeometry( custom[i], {
-				font: textFont,
-				size: textSize,
-				height: textHeight
-		});
+	material = new THREE.MeshPhongMaterial({
+			color: textColor
+	});
+	textGeom = new THREE.TextGeometry( custom, {
+			font: textFont,
+			size: textSize,
+			height: textHeight
+	});
 		
-		var j=objects.indexOf(textMesh[i]);
+	var j=objects.indexOf(textMesh);
 		
-		textMesh[i] = new THREE.Mesh( textGeom, material );
-		textGeom.computeBoundingBox();
-		var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;	
-		textMesh[i].position.set( 0, 0, -500+i*500);  
-		scene.add( textMesh[i] );
+	textMesh = new THREE.Mesh( textGeom, material );
+	textGeom.computeBoundingBox();
+	var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;	
+	textMesh.position.set( 0, 0, 0);  
+	textMesh.rotation.x=Math.PI*1.5;
+	sumCreator(textMesh,0);
+	if (j!=-1)
+		objects[j]=textMesh;
 		
-		
-		if (j!=-1)
-			objects[j]=textMesh[i];
-		
-	}
+
 	
 }
 
-function cylinder(){
-	var material = new THREE.MeshPhongMaterial( {ambient: 0xffff00, color: 0xffffff, specular: 0x555555, shininess: 30} );
 
-	var cube = new THREE.CubeGeometry(400, 400, 400);
+function stamp(){ 	
+	
+	var textSize = document.getElementById('stampTextSize').value;
+	var text = document.getElementById('stampText').value;
+	var length = 50;
+	var textColor=0xdddddd, textHeight=5 ,textFont='helvetiker';
+	var textMaterial = new THREE.MeshPhongMaterial({
+				color: textColor
+	});
+	var textGeom = new THREE.TextGeometry( text, {
+				font: textFont,
+				size: textSize,
+				height: textHeight,
+				curveSegments: 2
+	});
+	var textMesh = new THREE.Mesh( textGeom, textMaterial );
+	var textMeshFront = new THREE.Mesh( textGeom, textMaterial );
+	textMeshFront.rotation.y = Math.PI;
+	
+	textGeom.computeBoundingBox();
+	var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;	
+	var textHeight = textGeom.boundingBox.max.y - textGeom.boundingBox.min.y;
+	textMesh.position.set(-textWidth/2,-textHeight/2,length/2);
+	textMeshFront.position.set(textWidth/2,-textHeight/2,-length/2+1);
+	var text_bsp = new ThreeBSP( textMesh );
+	var textFront_bsp = new ThreeBSP( textMeshFront );
+	
+	
+	
+	
+	var material = new THREE.MeshPhongMaterial( {ambient: 0xffff00, color: 0xffffff, specular: 0x555555, shininess: 30} );
+	var cube = new THREE.CubeGeometry(textWidth+5, textHeight+5, length);     //here (textWidth+5, textHeight+5, length)
 	var cube_mesh = new THREE.Mesh(cube,material);
-	cube_mesh.position.x = 100;
 	var cube_bsp = new ThreeBSP( cube_mesh );
 
-	var sphere = new THREE.SphereGeometry(300, 16, 16);
-	var sphere_mesh = new THREE.Mesh(sphere,material);
-	var sphere_bsp = new ThreeBSP( sphere_mesh );
-
+	
+	cube_bsp = logoCreator(cube_bsp,textHeight);
 	
 	console.time('operation');
-	var union = cube_bsp.union( sphere_bsp );
+	
+	cube_bsp = cube_bsp.subtract( textFront_bsp );
+	var union = cube_bsp.union( text_bsp );
 	console.timeEnd('operation');
 	console.time('mesh');
 	var mesh = new THREE.Mesh( union.toGeometry(), material );
-	sumCreator(mesh,400/2);
+	
+	sumCreator(mesh,(textHeight+5)/2);                                                //here textHeight+5/2
 }
 
-function cubeCreator(){
-//	var objectLength = 300;
-//	var geometry = new THREE.BoxGeometry( objectLength, objectLength, objectLength );
-//	var material = new THREE.MeshPhongMaterial( {ambient: 0xffff00, color: 0xffffff, specular: 0x555555, shininess: 30} );
-//	var cube = new THREE.Mesh( geometry, material );
+function logoCreator(cube_bsp,height){
+	var textSize = 5;
+	var textColor=0xdddddd, textHeight=5 ,textFont='helvetiker';
 	
-//	sumCreator(cube,objectLength/2);
-//	currentOffset = objectLength/2;         //for cube to lie on the ground rightly	
-
-	var loader = new THREE.STLLoader();
-	loader.addEventListener( 'load', function ( event ) {
-
-	var geometry = event.content;
-	var material = new THREE.MeshPhongMaterial( { ambient: 0xff5533, color: 0xff5533, specular: 0x111111, shininess: 200 } );
-	var mesh = new THREE.Mesh( geometry, material );
-
-	mesh.position.set( 0, 0, 0 );
-	mesh.rotation.set( 0, - Math.PI / 2, 0 );
-	mesh.scale.set( 0.5, 0.5, 0.5 );
-
-	mesh.castShadow = true;
-	mesh.receiveShadow = true;
-
-	sumCreator(mesh,0);
-
-	} );
+	var textGeom = new THREE.TextGeometry( "3Dink", {
+				font: textFont,
+				size: textSize,                                                      //here
+				curveSegments: 2, 
+				height: textHeight                                             //HERE TEXTHEIGHT                  
+	});
+	var textMaterial = new THREE.MeshPhongMaterial({
+				color: textColor
+	});
+	textGeom.computeBoundingBox();
+	var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;	
+	var textHeight = textGeom.boundingBox.max.y - textGeom.boundingBox.min.y;
 	
-	loader.load( 'stl/20mm.stl' );
-
-
-
+	var textMesh = new THREE.Mesh( textGeom, textMaterial );
+	textMesh.rotation.x = Math.PI*1.5;
+	textMesh.position.set(-textWidth/2,height/2,0);
+	var text_bsp = new ThreeBSP( textMesh );
+	cube_bsp = cube_bsp.subtract( text_bsp );                                           //here
 	
+	
+	
+	var textMesh2 = new THREE.Mesh( textGeom, textMaterial );
+	textMesh2.rotation.x = Math.PI/2;
+	textMesh2.position.set(-textWidth/2,-height/2,0);
+	var text_bsp2 = new ThreeBSP( textMesh2 );
+	cube_bsp = cube_bsp.subtract( text_bsp2 );
+	return cube_bsp;
+}
+
+function torusCreator(){
+	var geometry = new THREE.TorusKnotGeometry( 10, 3, 100, 16 );
+	var material = new THREE.MeshPhongMaterial( {ambient: 0xff5533, color:0xffffff, specular: 0x111111, shininess: 200 } );
+	var torusKnot = new THREE.Mesh( geometry, material );
+	torusKnot.position.set(0,0,0);
+	sumCreator(torusKnot , 16);
+
+
 }
 
 function sphereCreator(){
 	var material = new THREE.MeshPhongMaterial({ambient: 0xffff00, color: 0xffffff, specular: 0x555555, shininess: 30});
 
-	var objectRadius = 200;
-	var segments = 32;
+	var objectRadius = 10;
+	var segments = 8;
 
 	var sphereGeometry = new THREE.SphereGeometry( objectRadius, 32, 32 );		
 	var sphere = new THREE.Mesh( sphereGeometry, material );
 	
-	sumCreator(sphere,objectRadius);
+	sumCreator(sphere,objectRadius); 
+
+	
 //	currentOffset = objectRadius;
 }
 
@@ -242,70 +278,141 @@ loader.load( 'stl/2.STL' );
 
 
 function reStart(){
+	if (paintFlag){
+		geometryMerge = new THREE.Geometry();
+		clearObject();
+	}
+	
 	var container = document.getElementById("div1");
 	if (controls.enabled){
+		document.getElementById('3dpaint').value="關閉3D手繪模式";
 		controls.enabled = false;
 		container.addEventListener( 'mousemove', move, false );
 		container.addEventListener( 'mousedown', down, false );
 		container.addEventListener( 'mouseup', up, false );
 	}
-	else if (!controls.enabled){
+	else{
 		controls.enabled = true;
+		document.getElementById('3dpaint').value="3D手繪模式";
 		check = 0;
 		container.removeEventListener( 'mousemove', move, false );
 		container.removeEventListener( 'mousedown', down, false );
 		container.removeEventListener( 'mouseup', up, false );
+		
 	}
+	paintFlag=0;
+	
 }
-
+function intersectCheck(object,div){
+	var container = document.getElementById(div);
+	containerWidth = container.clientWidth;
+	containerHeight = container.clientHeight;
+	var projector = new THREE.Projector() , mouse = new THREE.Vector3();
+	mouse.x = 2 * (event.clientX / containerWidth) - 1;
+	mouse.y = 1 - 2 * ( event.clientY / containerHeight );
+	var raycaster = projector.pickingRay( mouse.clone(), camera );
+	var intersects = raycaster.intersectObject( object );
+	return intersects;
+}
+	
+	
 function down(event){
 	event.preventDefault();
-	controls.enabled = false;
-	check = 1;
+	var intersects = intersectCheck( plane , "div1");
+	if (intersects.length>0)
+		check = 1;
 }
 function move(event){
 	event.preventDefault();
-	var length = 100;
+	var length = 3;
 	
-	if (check){
-		var container = document.getElementById("div1");
-		containerWidth = container.clientWidth;
-		containerHeight = container.clientHeight;
-		var projector = new THREE.Projector() , mouse = new THREE.Vector3();
-		mouse.x = 2 * (event.clientX / containerWidth) - 1;
-		mouse.y = 1 - 2 * ( event.clientY / containerHeight );
-		var raycaster = projector.pickingRay( mouse.clone(), camera );
-		var intersects = raycaster.intersectObject( plane );
-		var geometry = new THREE.BoxGeometry( length, length, length );
-		var material = new THREE.MeshBasicMaterial( {color: 0xffffff , wireframe:true} );
-		var cube = new THREE.Mesh( geometry, material );
-		cube.position.copy( intersects[0].point );
-		cube.position.y = length/2;
-		scene.add( cube);
+	if (check && controls.enabled == false ){
+		
+		var intersects = intersectCheck( plane , "div1");
+		
+		if (intersects.length>0){
+			var geometry = new THREE.BoxGeometry( length, length, length );
+			var material = new THREE.MeshPhongMaterial({color: 0xff0000 , transparent : true , opacity:0.5 , side: THREE.DoubleSide});
+			var cube = new THREE.Mesh( geometry, material );
+			cube.position.copy( intersects[0].point );
+			cube.position.y = length/2;
+			scene.add( cube);
+			currentObject.push(cube); 	
+			tubePosition.push(cube.position);
+		}else {
+			return;
+		}
+		/*
+		THREE.GeometryUtils.merge(geometryMerge, cube); */
+		
+		
 	}
-
+	
 }
 function up(event){
 	event.preventDefault();
-	check = 0;
-	controls.enabled = false;
+	var intersects = intersectCheck( plane , "div1");
+		
+	if (check && intersects.length>0){
+		controls.enabled = false;
+		
+		if (currentObject[0]){
+			for (var i in currentObject){
+				scene.remove(currentObject[i]);
+				objects.splice(currentObject[i]);
+			}
+		}
+	
+		var pipeSpline = new THREE.SplineCurve3(tubePosition);
+		var material = new THREE.MeshPhongMaterial({ambient: 0xffff00, color: 0xffffff, specular: 0x555555, shininess: 30});
+		var tube = new THREE.TubeGeometry(pipeSpline, 50, 3, 5, false);
+		var tube_Mesh = new THREE.Mesh( tube, material );
+		scene.add( tube_Mesh);
+		THREE.GeometryUtils.merge(geometryMerge, tube_Mesh);
+		tubePosition = [];	
+		check = 0;
+		geometryMerge.rotation.x=Math.PI/2;
+	}
+	
 }
 
 
 
 function voxelPainter(){
+	if (voxelFlag)
+		geometryMerge = new THREE.Geometry();
+	
+	if (!voxel[0]){
+		clearObject();
+	}
 	var container = document.getElementById("div1");
 	if (controls.enabled){
+		document.getElementById('minecraft').value="關閉MineCraft模式";
 		controls.enabled = false;
 		container.addEventListener( 'mousemove', voxelMove, false );
 		container.addEventListener( 'mousedown', voxelDown, false );
 		//container.addEventListener( 'mouseuo', up, false );
 	}else{
 		controls.enabled = true;
+		document.getElementById('minecraft').value="MineCraft模式";
 		container.removeEventListener( 'mousemove', voxelMove, false );
 		container.removeEventListener( 'mousedown', voxelDown, false );
 		//container.addEventListener( 'mouseuo', up, false );
 		scene.remove(pioneerCube);
+	}
+	voxelFlag=0;
+}
+function over(){
+	
+	if (!controls.enabled){
+		container.removeEventListener( 'mousedown', voxelDown, false );
+		scene.remove(pioneerCube);
+	}
+}
+function out(){
+	if (!controls.enabled){
+		container.addEventListener( 'mousedown', voxelDown, false );
+		scene.add(pioneerCube);
 	}
 }
 
@@ -314,7 +421,7 @@ function voxelMove(event){
 	controls.enabled = false;
 	
 	scene.remove (pioneerCube);
-	var length = 100;
+	var length = 10;
 	
 	var intersects = intersectDetector(plane);
 	var voxelIntersects;
@@ -358,13 +465,9 @@ function voxelMove(event){
 }
 
 function voxelPlacement(x , y ,z ,index){
-	
-	
 	voxelX = voxelCoordinate[index].x + x;
 	voxelY = voxelCoordinate[index].y + y;
 	voxelZ = voxelCoordinate[index].z + z;
-
-
 }
 
 
@@ -372,8 +475,7 @@ function voxelPlacement(x , y ,z ,index){
 function voxelDown(event){
 	event.preventDefault();
 	controls.enabled = false;
-	var length = 100;
-	
+	var length = 10;
 	var materialArray = [];
 	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/grass.jpg' ) }));
 	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/grass.jpg' ) }));
@@ -398,7 +500,8 @@ function voxelDown(event){
 	voxelCoordinate.push(cube.position);
 	voxel.push(cube);
 	scene.add ( cube );
-	
+	currentObject.push(cube);
+	THREE.GeometryUtils.merge(geometryMerge, cube);
 	
 }
 
@@ -429,63 +532,49 @@ function intersectsDetector(objects){
 }
 
 
-function sumCreator(object,offset){
+function gCode(){
 
-	object.name = "obj."+objectCount++;         //dot for string exploit
-	objectOffset.push(offset);
-	createdObject.push(object);
-	object.position.set( 0,900,0 );
-	object.geometry.computeFaceNormals();
-	scene.add( object );
-	objects.push(object);
-	currentCreation = object;
-	onCreateRenderer();
+	var xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function(){
+        if(xhr .readyState == 4){
+            if (xhr.status === 200)
+                Gbegin(xhr.responseText.trim());
+				
+        }
+//	window.location = "http://140.127.220.81/exec.php";
+	};
+	xhr.open( 'GET', 'toGcode.php', true );
+	xhr.send( null );
+
 }
 
-function onCreateRenderer(){
 
-	for (var i = 0; i<createdObject.length ; i++){
-		var index = createdObject[i].name.split('.')[1];
-		if (createdObject[i].position.y <= objectOffset[index]){
-			createdObject.splice(i,1);
-			continue;
+
+function clearObject(){
+	geometryMerge = new THREE.Geometry();
+	voxel = [];
+	voxelCoordinate = [];
+	voxelNumber = 0;
+	if (currentObject[0]){
+		for (var i in currentObject){
+			scene.remove(currentObject[i]);
+			objects.splice(currentObject[i]);
 		}
-		window.requestAnimationFrame(onCreateRenderer);
-		createdObject[i].position.y-=30;
-		
 	}
 }
+function sumCreator(object,offset){
+	voxelFlag = 1;
+	paintFlag = 1;
+	clearObject();
+	THREE.GeometryUtils.merge(geometryMerge, object);
+	object.name = "obj."+objectCount++;         //dot for string exploit
+	object.position.set( 0,offset,0 );
+	object.geometry.computeFaceNormals();
+	currentObject.push(object);
+	scene.add( object );
+	objectOffset.push(offset);
+	objects.push(object);
 
-
-function ha(){
-	var loader = new THREE.STLLoader();
-	loader.addEventListener( 'load', function ( event ) {
-
-		var geometry = event.content;
-		var material = new THREE.MeshPhongMaterial( { ambient: 0xff5533, color: 0xff5533, specular: 0x111111, shininess: 200 } );
-		var mesh = new THREE.Mesh( geometry, material );
-		mesh.position.set( 0, 0, 0 );
-		mesh.rotation.set( Math.PI*1.5, 0, 0 );
-		mesh.scale.set( 10, 10, 100 );
-		mesh.castShadow = true;
-		mesh.receiveShadow = true;
-		var mesh_bsp = new ThreeBSP (mesh);
-		
-
-		
-		scene.add( mesh );
-		objects.push(mesh);
-		
-		var cube = new THREE.CubeGeometry(10, 10, 10);
-		var cube_mesh = new THREE.Mesh(cube,material);
-		cube_mesh.position.x = 100;
-		var cube_bsp = new ThreeBSP( cube_mesh );
-		
-		var union = cube_bsp.union(mesh_bsp);
-		var mesh = new THREE.Mesh( union.toGeometry(), material );
-		sumCreator(mesh,0);
-	} );
-	loader.load( 'stl/2.STL' );
-	
-	
 }
+

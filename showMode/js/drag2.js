@@ -58,13 +58,13 @@ function drop(e){
     var xhr = new XMLHttpRequest();
     var fd = new FormData();
 
-    xhr.open("POST","upload.php");
-    xhr.onload=function(){
+    
+  /*  xhr.onload=function(){
 		$(DragUpload.target.id+"dragData").value = files[0].name;
 		var temp = DragUpload.target.id+"Progress";
 		$(temp).style.opacity=0;
         
-    };
+    };  
 
     xhr.upload.onprogress=function(e){
       if (e.lengthComputable){
@@ -74,15 +74,16 @@ function drop(e){
         var temp = DragUpload.target.id+"Progress";
         $(temp).style.height=progress*(360/100)+"px";                      // depend on the height of the progress height
       }
-    };
+    };    */ 
+	
     for (var i in files){
-        if (files[i].type =="image/jpeg"){
-          var fr = new FileReader();
-          fr.onload=openfile;
-          fr.readAsDataURL(files[i]);
-		  fd.append("ff[]",files[i]);
-        }
+        var fr = new FileReader();
+        fr.onload=openfile;
+		fr.readAsDataURL(files[i]);
+		fd.append("ff[]",files[i]);
+        
     }
+	xhr.open("POST","upload.php");
     xhr.send(fd);
 
   }

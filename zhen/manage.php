@@ -11,22 +11,21 @@
 </head>
 <body style="overflow-x: hidden;margin:0 0 0 0 ;background-color:#333333;">
 	<div class='frame' id='frame'>
-		<div class='straightline'id='straightlineleft' style="float:left"></div>
-		<div class='straightline'id='straightlineright' style="float:right"></div>
-		<div class="navbar navbar-fixed-top" id='headerlink'>
-			<div class="navbar-inner" >
+		<div class="navbar navbar-fixed-top" id="headerlink">
+			<div class="navbar-inner" id="navbar-inner">
 				<div class="navcontainer" >
-					<?php include('../zhen/login_success.php')?>
+					<?php include('../zhen/login_success.php')  ?>
 					<ul class="nav searchbox">
 						<li><input type="text" id='searchbox'  placeholder="搜尋" style="font-color:#a1a1a1" onkeydown="search()"></li>
 					</ul> 
 					<ul class="nav button">
-						<li><a href="../jsstl-master/index.php"><img src="../img/print.png"></a></li>
-						<li><a href="../displayPlatform/index.html"><img src="../img/platform.png"></a></li>
-						<li><a href="../zhen/forum/forum_index.php"><img src="../img/forum.png"></a></li>
+						<li><a href="../three"><img src="img/forum.png"></a></li>
+						<li><a href="../jsstl-master/index.php"><img src="img/print.png"></a></li>
+						<li><a href="../newShowmode/index.php"><img src="img/platform.png"></a></li>
+						<li><a href=""><img src="img/forum.png"></a></li>	
 					</ul>
 					<span class="logo"><a href="../index.php"><img src="../img/print_img/choose.png"></a></span>
-					<span class="nav uploadbutton" ><a href="../showMode/file_upload.php"><img src="../img/upload.png"></a></span>
+					<span class="nav uploadbutton" ><a href="/showMode/file_upload.php"><img src="../img/upload.png"></a></span>
 				</div>
 			</div>
 		</div>
@@ -54,12 +53,11 @@
 							$facebookID=$_SESSION['id'];
 							$sql="SELECT * FROM member WHERE  facebookID='$facebookID'";
 						}
-						
 						$result = $db->query($link,$sql);
 						$row = mysqli_fetch_assoc($result);
 						echo "<p>暱稱：".$row['Nickname']."</p>";
 						echo "<p>E-mail：</br>".$row['Email']."</p>";		
-							
+						
 					?>
 					<a href="member_edit.php" class="button2" id="member_edit">編輯</a>
 				</div>
@@ -74,18 +72,21 @@
 							<span id='space_use'  >已使用<?php echo $gb;?>GB(剩餘<?php echo $capacity-$gb;?>GB)</span><br/>
 								<!--<span class='upgrade'>年繳<strong style='color:#FF0000'>NT$999</strong>即可獲得</br>10GB/年使用空間</span>-->
 								<?php 
-									if($capacity==2 ) 
+									if($capacity==2 || date('Y-m-d',strtotime("{$today} -1 year")<=$paymentTime ) )
 									{
 										echo "<span id='upgrade' style='margin-left: 60%;margin-top:3%;'><a class='button2' href='javascript: return false;' onclick='upgrade()' style='margin-top:5%;margin-right:5%'>立即升級</a></span>  ";
 									}
-									if($paymentTime!=NULL &&  $paymentStatus[1]!="0000-00-00")
+									if($paymentTime!=NULL &&  $paymentStatus[1]!="0000-00-00" )
 									{
-										if(date('Y-m-d',strtotime("{$today} -1 year +10day"))>=$paymentTime)
+										for($i=0;$i<=10;$i++)
 										{
-											echo "<span id='upgrade' style='margin-left: 28%;font-size:10px;'>";
-											echo "剩餘<strong style='color:#FF0000'>10天</strong>即將到期</span>";	
-											echo "<a class='button2' href='javascript: return false;' onclick='upgrade()' style='margin-top:5%;margin-right:5%'>立即延長</a>	";	
-										}
+											if(date('Y-m-d',strtotime("{$today} -1 year +".$i."day"))==$paymentTime)
+											{
+												echo "<span id='upgrade' style='margin-left: 28%;font-size:10px;'>";
+												echo "剩餘<strong style='color:#FF0000'>".$i."天</strong>即將到期</span>";	
+												echo "<a class='button2' href='javascript: return false;' onclick='upgrade()' style='margin-top:5%;margin-right:5%'>立即延長</a>	";	
+											}
+										}	
 									}
 								?>
 							
@@ -96,24 +97,24 @@
 				<div class="print_inquiry">
 					<span>列印進度查詢</span>
 					<form name="form" class="registerform" method="post" action="print_inquiry.php">
-						<select name="order" >
-							<option >訂單查詢</option>
+						<select name="order" id="order">
+							<option value="0">請選擇訂單</option>
 							<?php
-
-							include('order_tracking.php');  
-							$orderNo=$row1['orderNo'] ;
-							echo "<option value='". $orderNo ."'>". $row1['orderNo'] .$row2['productName']."</option>"; 
-							while($row1= mysqli_fetch_assoc($result1)+$row2= mysqli_fetch_assoc($result2) )
-							{
-								{		
-									$orderNo=$row1['orderNo'] ;
-									echo "<option value='".$orderNo."'>". $row1['orderNo'] .$row2['productName']."</option>"; 		
-									//echo "<li>". $row1['orderNo']  .$row2['productName']."</a></li>"; 		
+								include('order_tracking.php');  
+								$orderNo=$row1['orderNo'] ;
+								echo "<option value='". $orderNo ."'>". $row1['orderNo'] .$row2['productName']."</option>"; 
+								while($row1= mysqli_fetch_assoc($result1)+$row2= mysqli_fetch_assoc($result2) )
+								{
+									{		
+										$orderNo=$row1['orderNo'] ;
+										//echo "<option value='".$orderNo."'>". $row1['orderNo'] .$row2['productName']."</option>"; 
+										echo "<option value='".$orderNo."'>".$row2['productName']."</option>";		
+											
+									}
 								}
-							}
 							?>
 						</select>
-						<input type="submit" class="button2" value="查詢" >
+						<input type="submit" class="button2" value="查詢" onclick="return checkOrder();">
 						
 					</form>
 				</div>
@@ -129,7 +130,7 @@
 						<option value=4>列印授權費用(支出)</option>
 						<option value=5>列印授權費用(收入)</option>
 					</select>
-					<input type="submit" class="button2" value="查詢" onclick="return check();">
+					<input type="submit" class="button2" value="查詢" onclick="return checkTransactiontype();">
 				</form>
 				</div>
 				<div class="exhibition">
@@ -140,13 +141,7 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
-				
-
-		document.getElementById("straightlineleft").style.height = document.getElementById("frame").clientHeight + 'px';
-		document.getElementById("straightlineright").style.height = document.getElementById("straightlineleft").style.height;
-		
-	</script>
+	<script type="text/javascript" src="../js/search.js"></script>
 	<script type="text/javascript">
 		/*
 		//如果是使用臉書登入，就沒有編輯鈕
@@ -159,10 +154,11 @@
 		*/	
 		
 	
-		function check(){
+		function checkTransactiontype(){
 			var transactionType=document.getElementById('transactionType').value;
+			
 			//alert(transactionType);
-			if(transactionType==0 )
+			if(transactionType==0)
 			{
 				alert('尚未選擇類型');
 				return false;
@@ -172,6 +168,18 @@
 			}
 		}
 		
+		function checkOrder(){
+			var order=document.getElementById('order').value;
+			if(order==0){
+				alert('尚未選擇訂單');
+				return false;
+			
+			}
+			else{
+				return true;
+			}
+			
+		}
 		
 		//升級控制
 		function upgrade() { 

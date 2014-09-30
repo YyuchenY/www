@@ -200,7 +200,7 @@ function member_edit(){
 		$('#error_msg').text('Please enter your password again');
 		$('#Password').focus();
 		return false;
-	}else if(Nickname==""){
+	}else if(Nickname==""|| !(checkLength( Password, 1, 15 ))){
 		$('#error_msg').text('Please enter your nickname again');
 		$('#Nickname').focus();
 		return false;

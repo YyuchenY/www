@@ -16,16 +16,16 @@ var panelCount;
 var currentIndex;
 var averageScore;    //current averageScore
 
-arr[0]="translateX(-850px) ";
-arr[1]="translateX(-550px) ";
-arr[2]="translateX(-250px) rotateY( -30deg ) translateZ( 70px )";
-arr[3]="rotateY(0deg) translateZ( 150px )";
-arr[4]="translateX(250px) rotateY( 30deg ) translateZ( 70px )";
-arr[5]="translateX(550px) ";
-arr[6]="translateX(850px) ";
-arr[7]="translateX(1150px) ";
-arr[8]="translateX(1450px) ";
-arr[9]="translateX(1750px) ";
+arr[0]="translateX(-800px) translateZ( -100px )";
+arr[1]="translateX(-500px) translateZ( -100px )";
+arr[2]="translateX(-200px) rotateY( -50deg ) translateZ( 40px )";
+arr[3]="rotateY(0deg) translateZ( 125px )";
+arr[4]="translateX(200px) rotateY( 50deg ) translateZ( 40px )";
+arr[5]="translateX(500px) translateZ( -100px )";
+arr[6]="translateX(800px) translateZ( -100px )";
+arr[7]="translateX(1100px) translateZ( -100px )";
+arr[8]="translateX(1400px) translateZ( -100px )";
+arr[9]="translateX(1700px) translateZ( -100px )";
 
 
 
@@ -144,8 +144,10 @@ function carouselBuilder(){
 	}
 }
 
-function imageRequest(){
+function imageRequest(pictureNo,folderNo,categoryNo){
 	var xhr = new XMLHttpRequest;
+	//var pictureNo=pictureNo;
+	//var folderNo=folderNo;
 	xhr.onreadystatechange = function(){
 		if (xhr.readyState == 4){
 			var temp = xhr.responseText;
@@ -175,13 +177,15 @@ function imageRequest(){
 
 		}
 	}
-	xhr.open("GET","./info.php",false);
+	
+	xhr.open("GET","info.php?pictureNo="+pictureNo+"&folderNo="+folderNo+"&categoryNo="+categoryNo,false);
+	//xhr.open("GET","info.php?pictureNo=5234574&folderNo=1&categoryNo=1",false);
 	xhr.send(null);
 }
 
 
-function init () {
-	imageRequest();
+function init (pictureNo,folderNo,categoryNo) {
+	imageRequest(pictureNo,folderNo,categoryNo);
 	panelCount=linkArr.length;
 	carouselBuilder();
 	
@@ -198,23 +202,22 @@ function init () {
 					for (var j = 0 ; j < averageScore ; j++){
 						child[j].setAttribute("style","-webkit-filter:grayscale(0%)");
 					}
-					$("starStat").innerHTML = "<h2>平均評價："+averageScore+"/5 分，共 "+ratenumberArr[i]+" 筆評價</h2>"
+					$("starStat").innerHTML = "共 "+ratenumberArr[i]+" 筆評價"
 					$("optionBox"+i).style.opacity=1;
 					
 					var span=$('imageInfo'+i);
 					span.style.opacity='0.8';
 					span.innerHTML=nameArr[i];
-					temp.style['-webkit-filter']="grayscale(0)";
 					temp.className='nonopa';
 					var text = document.createElement("div");
 					
 					if(authorizePicArr[i]!='')
 					{
-						text.innerHTML="<h1>作品名稱："+nameArr[i]+"<p> 作品介紹： "+infoArr[i]+"</p><p> 作者： "+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</p><p>3D圖授權：$"+authorizePicArr[i]+"</p></h1>";
+						text.innerHTML="<span class='worksName'>"+nameArr[i]+"</span><span class='worksConcept'>設計理念</span><div class='worksInfo'>"+infoArr[i]+"</div><span class='worksAuthor'> 作者："+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</span><span class='worksPermission'>3D圖授權：$"+authorizePicArr[i]+"</span>";
 					}
 					else if(authorizePicArr[i]=='')
 					{
-						text.innerHTML="<h1>作品名稱："+nameArr[i]+"<p> 作品介紹： "+infoArr[i]+"</p><p> 作者： "+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</p><p>3D圖授權：未授權</p></h1>";
+						text.innerHTML="<span class='worksName'>"+nameArr[i]+"</span><span class='worksConcept'>設計理念</span><div class='worksInfo'>"+infoArr[i]+"</div><span class='worksAuthor'> 作者："+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</span><span class='worksPermission'>3D圖授權：未授權</span>";
 					}
 					$("info").appendChild(text);
 					$("text"+i).setAttribute("onclick","infoDrop()"); 
@@ -238,7 +241,7 @@ function init () {
 					$("optionBox"+i).style.opacity=0;
 					var span=$('imageInfo'+i);
 					span.style.opacity='0';
-					temp.style['-webkit-filter']="grayscale(1)";
+					
 					temp.className='opa';
 					if ((i==(count+dist+1)%arr.length) || (i==(count+dist+3)%arr.length )){
 						temp.className='middleopa';
@@ -307,14 +310,13 @@ function next(){
 					for (var j = 0 ; j < averageScore ; j++){
 						starChild[j].setAttribute("style","-webkit-filter:grayscale(0%)");
 					}
-					$("starStat").innerHTML = "<h2>平均評價："+averageScore+"/5 分，共 "+ratenumberArr[i]+" 筆評價</h2>"
+					$("starStat").innerHTML = "共 "+ratenumberArr[i]+" 筆評價</h2>"
 				
 					$("optionBox"+i).style.opacity=1;
 				
 					var span=$('imageInfo'+i);
 					span.style.opacity='0.8';
 					span.innerHTML=nameArr[i];
-					temp.style['-webkit-filter']="grayscale(0)";
 					temp.className='nonopa';
 					
 					$("info").removeChild($("info").lastChild);
@@ -322,11 +324,11 @@ function next(){
 					
 					if(authorizePicArr[i]!='')
 					{
-						text.innerHTML="<h1>作品名稱："+nameArr[i]+"<p> 作品介紹： "+infoArr[i]+"</p><p> 作者： "+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</p><p>3D圖授權：$"+authorizePicArr[i]+"</p></h1>";
+						text.innerHTML="<span class='worksName'>"+nameArr[i]+"</span><span class='worksConcept'>設計理念</span><div class='worksInfo'>"+infoArr[i]+"</div><span class='worksAuthor'> 作者："+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</span><span class='worksPermission'>3D圖授權：$"+authorizePicArr[i]+"</span>";
 					}
 					else if(authorizePicArr[i]=='')
 					{
-						text.innerHTML="<h1>作品名稱："+nameArr[i]+"<p> 作品介紹： "+infoArr[i]+"</p><p> 作者： "+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</p><p>3D圖授權：未授權</p></h1>";
+						text.innerHTML="<span class='worksName'>"+nameArr[i]+"</span><span class='worksConcept'>設計理念</span><div class='worksInfo'>"+infoArr[i]+"</div><span class='worksAuthor'> 作者："+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</span><span class='worksPermission'>3D圖授權：未授權</span>";
 					}					
 					$("info").appendChild(text);
 					$("text"+i).setAttribute("onclick","infoDrop()");   
@@ -339,7 +341,6 @@ function next(){
 					
 					$("optionBox"+i).style.opacity=0;
 					span.style.opacity='0';
-					temp.style['-webkit-filter']="grayscale(1)";
 					temp.className='opa';
 					if ((i==(count+dist+2)%panelCount) || (i==(count+dist+4)%panelCount )){
 						temp.className='middleopa';
@@ -400,7 +401,7 @@ function previous(){
 					for (var j = 0 ; j < averageScore ; j++){
 						starChild[j].setAttribute("style","-webkit-filter:grayscale(0%)");
 					}
-					$("starStat").innerHTML = "<h2>平均評價："+averageScore+"/5 分，共 "+ratenumberArr[i]+" 筆評價</h2>"
+					$("starStat").innerHTML = "共 "+ratenumberArr[i]+" 筆評價</h2>"
 			
 					
 			
@@ -408,19 +409,18 @@ function previous(){
 					var span=$('imageInfo'+i);
 					span.style.opacity='0.8';
 					span.innerHTML=nameArr[i];
-					temp.className='nonopa';
-					temp.style['-webkit-filter']="grayscale(0)";		
+					temp.className='nonopa';	
 					
 					$("info").removeChild($("info").lastChild);
 					var text = document.createElement("div");
 					
 					if(authorizePicArr[i]!='')
 					{
-						text.innerHTML="<h1>作品名稱："+nameArr[i]+"<p> 作品介紹： "+infoArr[i]+"</p><p> 作者： "+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</p><p>3D圖授權：$"+authorizePicArr[i]+"</p></h1>";
+						text.innerHTML="<span class='worksName'>"+nameArr[i]+"</span><span class='worksConcept'>設計理念</span><div class='worksInfo'>"+infoArr[i]+"</div><span class='worksAuthor'> 作者："+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</span><span class='worksPermission'>3D圖授權：$"+authorizePicArr[i]+"</span>";
 					}
 					else if(authorizePicArr[i]=='')
 					{
-						text.innerHTML="<h1>作品名稱："+nameArr[i]+"<p> 作品介紹： "+infoArr[i]+"</p><p> 作者： "+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</p><p>3D圖授權：未授權</p></h1>";
+						text.innerHTML="<span class='worksName'>"+nameArr[i]+"</span><span class='worksConcept'>設計理念</span><div class='worksInfo'>"+infoArr[i]+"</div><span class='worksAuthor'> 作者："+NicknameArr[i].link('../rockon40100/personal.php?memberNo='+memberNoArr[i])+"</span><span class='worksPermission'>3D圖授權：未授權</span>";
 					}					
 					$("info").appendChild(text);
 					$("text"+i).setAttribute("onclick","infoDrop()"); 
@@ -430,7 +430,6 @@ function previous(){
 				var span=$('imageInfo'+i);
 				span.style.opacity='0';
 				temp.className='opa';
-				temp.style['-webkit-filter']="grayscale(1)";
 				$("optionBox"+i).style.opacity=0;
 				if  (i==(count+dist)%panelCount || i == (count+dist+2)%panelCount){
 						temp.className='middleopa';
@@ -582,5 +581,5 @@ function foldOut(){
 
 
 
-window.addEventListener("DOMContentLoaded", init() ,false);
+
 		

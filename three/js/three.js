@@ -21940,10 +21940,17 @@ THREE.WebGLRenderer = function ( parameters ) {
 				v1 = vertices[ face.a ];
 				v2 = vertices[ face.b ];
 				v3 = vertices[ face.c ];
-
+				
+				
+				try{
 				vertexArray[ offset ]     = v1.x;
 				vertexArray[ offset + 1 ] = v1.y;
 				vertexArray[ offset + 2 ] = v1.z;
+				}
+				catch(e){
+					console.log("watch out when you are painting");
+					continue;
+				}
 
 				vertexArray[ offset + 3 ] = v2.x;
 				vertexArray[ offset + 4 ] = v2.y;

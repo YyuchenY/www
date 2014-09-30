@@ -142,32 +142,30 @@
 </head>
 <body style="overflow-x: hidden;margin:0 0 0 0 ;background-color:#333333;">
 	<div class='frame' id='frame'>
-		<div class='straightline'id='straightlineleft' style="float:left"></div>
-		<div class='straightline'id='straightlineright' style="float:right"></div>
-		<div class="navbar navbar-fixed-top" id='headerlink'>
-			<div class="navbar-inner" >
+		<div class="navbar navbar-fixed-top" id="headerlink">
+			<div class="navbar-inner" id="navbar-inner">
 				<div class="navcontainer" >
-					<?php include('../zhen/login_success.php')?>
+					<?php include('../zhen/login_success.php')  ?>
 					<ul class="nav searchbox">
 						<li><input type="text" id='searchbox'  placeholder="搜尋" style="font-color:#a1a1a1" onkeydown="search()"></li>
 					</ul> 
 					<ul class="nav button">
-							<li><a href=".."><img src="img/forum.png"></a></li>
-							<li><a href="../jsstl-master/index.php"><img src="img/print.png"></a></li>
-							<li><a href="../displayPlatform/index.php"><img src="img/platform.png"></a></li>
-							<li><a href="../zhen/forum/forum_index.php"><img src="img/forum.png"></a></li>	
+						<li><a href="../three"><img src="img/forum.png"></a></li>
+						<li><a href="../jsstl-master/index.php"><img src="img/print.png"></a></li>
+						<li><a href="../newShowmode/index.php"><img src="img/platform.png"></a></li>
+						<li><a href=""><img src="img/forum.png"></a></li>	
 					</ul>
 					<span class="logo"><a href="../index.php"><img src="../img/print_img/choose.png"></a></span>
-					<span class="nav uploadbutton" ><a href="../showMode/file_upload.php"><img src="../img/upload.png"></a></span>
+					<span class="nav uploadbutton" ><a href="/showMode/file_upload.php"><img src="../img/upload.png"></a></span>
 				</div>
 			</div>
 		</div>
 		<div class='previewframe'>
 			<div id = "modelDisplay"></div>
 			<div id = "form">
-				<form action='print_fillin' method='POST' class='printform'>
+				<form action='print_fillin.php' method='POST' class='printform'>
 					<ul class='printformul'>
-						<li>作品名稱： <input type="text" name="name" />
+						<li>作品名稱： <input type="text" name="productName" />
 						<li>列印密度： <input type="text" name="name"  maxlength="5" />&nbsp%</li>
 						
 					</ul>
@@ -182,7 +180,7 @@
 			<script src="stats.js"></script>
 			<script src="detector.js"></script>
 			<script src="stlviewer.js"></script>
-			
+			<script type="text/javascript" src="../js/search.js"></script>
 			<?php if (empty($_GET['path'])){
 							echo "<div id='dragArea'>
 									<span class='dragArea_text'>將檔案拖曳上傳</span>
@@ -195,12 +193,5 @@
 			?>
 		</div>
 	</div>	
-		<script type="text/javascript">
-
-			document.getElementById("straightlineleft").style.height = document.getElementById("frame").clientHeight +'px';
-			document.getElementById("straightlineright").style.height = document.getElementById("straightlineleft").style.height;
-			
-		</script>
-		
-    </body>
+</body>
 </html>

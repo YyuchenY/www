@@ -1,6 +1,6 @@
 <html>
 <head>
-	<link rel="stylesheet" href="../../../showMode/css/roll.css" />
+	<link rel="stylesheet" href="roll.css" />
 	<style type="text/css">
 	.folder_content{
 			float:left;
@@ -109,15 +109,8 @@
 	
 	</div>
 <div id="info"  class="infoHoverOut"> 
-		<div id="starRating">
-			<img src="../../showMode/img/star.png" alt="1" >
-			<img src="../../showMode/img/star.png" alt="2" >
-			<img src="../../showMode/img/star.png" alt="3" >
-			<img src="../../showMode/img/star.png" alt="4" >
-			<img src="../../showMode/img/star.png" alt="5" >
-		</div>
-		<div id = "starStat"></div>
-		<div id='fbpost' class="fb-share-button" data-href="" data-type="button"></div>
+		
+	
 	</div>
 
 <script type="text/javascript">
@@ -137,19 +130,7 @@ var panelCount;
 var currentIndex;
 var averageScore;    //current averageScore
 var sum;
-/*
-arr[0]="translateX(-850px) ";
-arr[1]="translateX(-550px) ";
-arr[2]="translateX(-250px) rotateY( -30deg ) translateZ( 70px )";
-arr[3]="rotateY(0deg) translateZ( 150px )";
-arr[4]="translateX(250px) rotateY( 30deg ) translateZ( 70px )";
-arr[5]="translateX(550px) ";
-arr[6]="translateX(850px) ";
-arr[7]="translateX(1150px) ";
-arr[8]="translateX(1450px) ";
-arr[9]="translateX(1750px) ";
 
-*/
 arr[0]="rotateY(0deg) translateZ( 150px )";
 
 
@@ -161,26 +142,10 @@ function $(id){
 }
 
 
-/*
-function picCount(){
-	var xhr = new XMLHttpRequest;
-	
-	xhr.onreadystatechange = function(){
-	
-		if (xhr.readyState == 4)
-		{
-			sum=xhr.responseText;
-			sum=sum.trim() ;
-		}
-	};
-	xhr.open("GET" , "pic_count.php", true);
-	xhr.send(null);
-}
-*/
 
 function carouselBuilder(){
 	for ( var i = 0 ; i <panelCount; i++){
-		//var div = document.createElement("div");
+		var div = document.createElement("div");
 		var figure = document.createElement("figure");
 		figure.setAttribute("id","figure"+i);
 		figure.className="front";
@@ -190,41 +155,18 @@ function carouselBuilder(){
 		//img.src=linkArr[i];
 		img.width=180;
 		img.height=240;
-		var span = document.createElement("span");
-		
-		var box = document.createElement("div");
-		var print = document.createElement("div");
-		var cube = document.createElement("div");
 		var text = document.createElement("div");
 
-	/*	var figure2 = document.createElement("figure");
-		figure2.setAttribute("id","figure3D"+i);
-		figure2.className="back";
-		geoInit(link3DArr[i],"figure3D"+i);
-		
-		var button = document.createElement("button");
-		button.addEventListener("click",function(){toogleClassName("flipped");},false);
-		div.appendChild(button);*/
-		
-		print.className = "option";
-		cube.className = "option";
+
 		text.className = "option";
 		
-		print.setAttribute("id","print"+i);
-		text.setAttribute("id","text"+i);
-		cube.setAttribute("id","cube"+i);
+
 		
-		box.setAttribute("id","optionBox"+i);
-		box.appendChild(print);
-		box.appendChild(cube);
-		box.appendChild(text);
-		
-		span.setAttribute("id","imageInfo"+i);
-		span.innerHTML = nameArr[i];
-		
-		figure.appendChild(box);
+		text.setAttribute("id","textBox"+i);
+	
+		figure.appendChild(text);
 		figure.appendChild(img);
-		figure.appendChild(span);
+		
 		$("carousel").appendChild(figure);
 	//	div.appendChild(figure2);
 		//$("carousel").appendChild(div);
@@ -263,9 +205,6 @@ function init () {
 	imageRequest();
 	panelCount=noArr.length;
 	carouselBuilder();
-	
-	//alert(panelCount);
-
 
 	for (var i = 0 ; i < panelCount ; i++){
 		
@@ -273,10 +212,8 @@ function init () {
 		temp.style.webkitTransform = arr[i];
 		temp.style.webkitTransition = "all 1s";
 		if (i==(count+dist+2)%arr.length){
-					currentIndex = i;
-					//$("optionBox"+i).style.opacity=1;
-					
-					var span=$('imageInfo'+i);
+					currentIndex = i;				
+					var span=$('textBox'+i);
 					//span.style.opacity='0.8';
 					span.innerHTML=nameArr[i];
 					//temp.style['-webkit-filter']="grayscale(0)";
@@ -292,15 +229,11 @@ function init () {
 						text.innerHTML="<h1>作品名稱："+nameArr[i]+"<p> 作品介紹： "+infoArr[i]+"</p><p>3D圖授權：未授權</p></h1>";
 					}
 					$("info").appendChild(text);
-					$("text"+i).setAttribute("onclick","infoDrop()"); 
-					//$("cube"+i).setAttribute("onclick","foldIn()"); 
-					$("print"+i).setAttribute("onclick","printRequest('"+link3DArr[i]+"')"); 
-				
 				}
 				else {
 					
 					//$("optionBox"+i).style.opacity=0;
-					var span=$('imageInfo'+i);
+					var span=$('textBox'+i);
 					span.style.opacity='0';
 					//temp.style['-webkit-filter']="grayscale(1)";
 					temp.className='opa';
@@ -367,7 +300,7 @@ function next(){
 					
 					//$("optionBox"+i).style.opacity=1;
 				
-					var span=$('imageInfo'+i);
+					var span=$('textBox'+i);
 					//span.style.opacity='0.8';
 					span.innerHTML=nameArr[i];
 					//temp.style['-webkit-filter']="grayscale(0)";
@@ -385,16 +318,14 @@ function next(){
 						text.innerHTML="<h1>作品名稱："+nameArr[i]+"<p> 作品介紹： "+infoArr[i]+"</p><p>3D圖授權：未授權</p></h1>";
 					}					
 					$("info").appendChild(text);
-					$("text"+i).setAttribute("onclick","infoDrop()");   
-					//$("cube"+i).setAttribute("onclick","foldIn()"); 
-					$("print"+i).setAttribute("onclick","printRequest('"+link3DArr[i]+"')"); 
+					
 				}
 				else {
 					
-					var span=$('imageInfo'+i);
+					var span=$('textBox'+i);
 					
-					$("optionBox"+i).style.opacity=0;
-					//span.style.opacity='0';
+					//$("optionBox"+i).style.opacity=0;
+					span.style.opacity='0';
 					//temp.style['-webkit-filter']="grayscale(1)";
 					temp.className='opa';
 					if ((i==(count+dist+2)%panelCount) || (i==(count+dist+4)%panelCount )){
@@ -449,8 +380,8 @@ function previous(){
 					currentIndex = i;
 					
 			
-					$("optionBox"+i).style.opacity=1;
-					var span=$('imageInfo'+i);
+					//$("optionBox"+i).style.opacity=1;
+					var span=$('textBox'+i);
 					//span.style.opacity='0.8';
 					span.innerHTML=nameArr[i];
 					temp.className='nonopa';
@@ -468,15 +399,13 @@ function previous(){
 						text.innerHTML="<h1>作品名稱："+nameArr[i]+"<p> 作品介紹： "+infoArr[i]+"</p><p>3D圖授權：未授權</p></h1>";
 					}					
 					$("info").appendChild(text);
-					$("text"+i).setAttribute("onclick","infoDrop()"); 
-					$("cube"+i).setAttribute("onclick","foldIn()"); 
-					$("print"+i).setAttribute("onclick","printRequest('"+link3DArr[i]+"')"); 
+					
 			}else{ 
-				var span=$('imageInfo'+i);
-				//span.style.opacity='0';
+				var span=$('textBox'+i);
+				span.style.opacity='0';
 				temp.className='opa';
 				//temp.style['-webkit-filter']="grayscale(1)";
-				$("optionBox"+i).style.opacity=0;
+				//$("optionBox"+i).style.opacity=0;
 				if  (i==(count+dist)%panelCount || i == (count+dist+2)%panelCount){
 						temp.className='middleopa';
 						temp.setAttribute("onclick","null");
@@ -511,7 +440,7 @@ function previous(){
 			}
 			count--;		
 }
-
+/*
 function infoDrop(){
 	var temp = $("info");
 	form = form * (-1);

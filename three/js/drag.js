@@ -112,8 +112,8 @@
 				if (intersects.length>0){
 					controls.enabled = false;	
 					var index = intersects[0].object.name.split('.')[1];
-					objects[index] = null ; 
-					objectOffset[index] = null;
+					objects.splice(index,1);
+					objectOffset.splice(index,1);
 					scene.remove(intersects[0].object);
 				}
 			} 

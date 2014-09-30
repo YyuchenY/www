@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
 	<style type="text/css">
-		.member_pic>img{
+		.member_pic>a>img{
 			width:46px;
 			height:46px;
 			border:1px solid gray;
@@ -29,23 +29,40 @@
 			
 		}
 		.login_right>li{
-			float:right;
 			color:#999999;
 			text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);
 			font-family:Microsoft JhengHei;
 			font-size:18px;
 			padding-right:4px;
-
-			
+			overflow:hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+			width:120px;
 		}
 		.login_right>li>a{
+			text-decoration:none;
+			color:#999999;
+		}
+		.login_right_a{
+			-webkit-padding-start: 0px;
 			float:right;
+		}
+		.login_right_a>li{
+			
+			color:#999999;
+			text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);
+			font-family:Microsoft JhengHei;
+			*font-size:18px;
+			padding-right:4px;
+		}
+		.login_right_a>li>a{
 			padding:0px 5px 5px 5px;
 			color:#999999;
 			text-decoration:none;
 			text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);
 			font-family:Microsoft JhengHei;
 			font-size:16px;
+			
 		}
 	
 	</style>
@@ -82,11 +99,15 @@
 				$kb = number_format($kb, 2);
 				$mb = number_format($mb, 2);
 				$gb = number_format($gb, 2);
+				$today=date("Y-m-d ");
 				if($paymentStatus[0]==1)
 				{
 					$capacity=10;
 					$paymentTime=date($paymentStatus[1]);
-					$today=date("Y-m-d ");
+					if(date('Y-m-d',strtotime("{$today} -1 year")<=$paymentTime )){
+						$capacity=2;
+					}
+					
 				}
 				elseif($paymentStatus[0]==0) {
 					$capacity=2;
@@ -96,14 +117,14 @@
 				<div class='text-right'>		
 				<ul class='nav login_right'>
 				<!--<li ><div class="name_field" id="name_field" type="button"  onclick="return Expand();"><?php echo $row[10]?></div></li>/*隱藏區塊點擊後顯示*/-->
-				<li ><?php echo $row[10]?></li>
+				<li ><a href="/rockon40100/personal.php?memberNo=<?php echo $_SESSION['No']?>"><?php echo $row[10]?></a></li>
 				</ul>
-				<ul class='nav login_right'>
+				<ul class='nav login_right_a'>
 				<li ><a href='/zhen/logout.php' >登出</a></li>
 				<li ><a href='/zhen/manage.php' >會員中心</a></li>
 				</ul>
 				</div>
-				<span class='member_pic'><img src='<?php echo $row[6]?>'></span>
+				<span class='member_pic'><a href='/rockon40100/personal.php?memberNo=<?php echo $_SESSION['No']?>'><img src='<?php echo $row[6]?>'></a></span>
 			
 <?php			
 			}		
@@ -148,14 +169,14 @@
 ?>
 				<div class='text-right'>		
 				<ul class='nav login_right'>
-				<li ><?php echo $row[10]?></li>
+				<li ><a href="/rockon40100/personal.php?memberNo=<?php echo $_SESSION['No']?>"><?php echo $row[10]?></a></li>
 				</ul>
 				<ul class='nav login_right'>
 				<li ><a href='/zhen/logout.php' >登出</a></li>
 				<li ><a href='/zhen/manage.php' >會員中心</a></li>
 				</ul>
 				</div>
-				<span class='member_pic'><img src='http://graph.facebook.com/<?php echo$facebookID;?>/picture'></span>			
+				<span class='member_pic'><a href="/rockon40100/personal.php?memberNo=<?php echo $_SESSION['No']?>"><img src='http://graph.facebook.com/<?php echo$facebookID;?>/picture'></a></span>			
 <?php
 			}
 			else

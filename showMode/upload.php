@@ -35,7 +35,8 @@ if (isset($_POST["name"]) && isset($_POST["introduction"] )){
 			move_uploaded_file($tmp_name, $file[$key]);
 	}
 }
-
+	$file[1]=$uploaddir."/".$_FILES['normData2D']['name'];
+	move_uploaded_file($_FILES["normData2D"]["tmp_name"], $file[1]);
 	
 	$db=new DB();
 	$link=$db->connect_db($_DB['host'],$_DB['username'],$_DB['password'],$_DB['dbname']);
@@ -75,14 +76,19 @@ if (isset($_POST["name"]) && isset($_POST["introduction"] )){
 
 }
 else{
-	foreach ($_FILES["ff"]["error"] as $key => $error) {
-		if ($error == UPLOAD_ERR_OK) {
-			$tmp_name = $_FILES["ff"]["tmp_name"][$key];
-			$name = $_FILES["ff"]["name"][$key];
-			@move_uploaded_file($tmp_name, "$uploaddir/$name");
-		}
+//	foreach ($_FILES["ff"]["error"] as $key => $error) {
+//		if ($error == UPLOAD_ERR_OK) {
+			if (!empty($_FILES["ff"]["tmp_name"][0])){
+				$tmp_name = $_FILES["ff"]["tmp_name"][0];
+				$name = $_FILES["ff"]["name"][0];
+				@move_uploaded_file($tmp_name, "$uploaddir/$name");
+			}else if (!empty($_FILES["ff"]["tmp_name"][1])){
+				$tmp_name = $_FILES["ff"]["tmp_name"][1];
+				$name = $_FILES["ff"]["name"][1];
+				@move_uploaded_file($tmp_name, "$uploaddir/$name");
+			}
 	}
-}
+
 
 header("Location:index.php");
 

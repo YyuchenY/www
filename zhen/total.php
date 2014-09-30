@@ -26,24 +26,24 @@
 	?>
 </head>
 <body style="overflow-x: hidden;background-image:url(../img/loginbg.jpg); ">
-		<div class="navbar navbar-fixed-top" >
-		  <div class="navbar-inner" >
-			<div class='fixbarleft' id='fixbarleft'><img src='../img/fixbar_left.png'></div>
-			<div class="navcontainer" >
-				<?php include('login_success.php')?>
-				<ul class="nav searchbox">
-						<li><input type="text"  placeholder="搜尋" style="font-color:#a1a1a1"></li>
-				</ul>  
-				<ul class="nav button">
-					<li><a href=""><img src="../img/print.png"></a></li>
-					<li><a href="../displayPlatform/index.html"><img src="../img/platform.png"></a></li>
-					<li><a href="forum/forum_index.php"><img src="../img/forum.png"></a></li>
-				</ul>
-				<span class="logo"><a href="../index.php"><img src="../img/print_img/choose.png"></a></span>
-				<span class="nav uploadbutton" ><a href="../showMode/file_upload.html"><img src="../img/upload.png"></a></span>
+	<div class='frame' id='frame'>	
+		<div class="navbar navbar-fixed-top" id="headerlink">
+			<div class="navbar-inner" id="navbar-inner">
+				<div class="navcontainer" >
+					<?php include('../zhen/login_success.php')  ?>
+					<ul class="nav searchbox">
+						<li><input type="text" id='searchbox'  placeholder="搜尋" style="font-color:#a1a1a1" onkeydown="search()"></li>
+					</ul> 
+					<ul class="nav button">
+						<li><a href="../three"><img src="img/forum.png"></a></li>
+						<li><a href="../jsstl-master/index.php"><img src="img/print.png"></a></li>
+						<li><a href="../newShowmode/index.php"><img src="img/platform.png"></a></li>
+						<li><a href=""><img src="img/forum.png"></a></li>	
+					</ul>
+					<span class="logo"><a href="../index.php"><img src="../img/print_img/choose.png"></a></span>
+					<span class="nav uploadbutton" ><a href="/showMode/file_upload.php"><img src="../img/upload.png"></a></span>
+				</div>
 			</div>
-			<div class='fixbarright' id='fixbarright'><img src='../img/fixbar_right.png'></div>
-		  </div>
 		</div>
 	<?php
 		if(isset($_SESSION['No']))
@@ -66,77 +66,78 @@
 		//$row3= mysqli_fetch_assoc($result3);
 	?>
 	
-	<div class='transaction_total'>
-		<table class="total_table" rules="all" >
-			<tr><td>收入編號</td><td>購買人</td><td>購買類型</td><td>金額</td><td>付款狀態</td><td>付款時間</td><td>匯款後五碼</td></tr>
-			<?php
-				while($row2= mysqli_fetch_assoc($result2))
-				{		
-					echo "<tr><td>".$row2['serialNumber']."</td>";
-						if($row2['memberNo']!=NULL && $row2['ads_purchaseNo']==NULL && $row2['print_authorizationNo']==NULL)
-						{
-							$sql5="SELECT Nickname FROM member WHERE memberNo = '$row2[memberNo]'";
-							$result5=$db->query($link,$sql5);
-							$Nickname=mysqli_fetch_assoc($result5);		
-							echo "<td>".$Nickname['Nickname']."</td>";	
-							if($row2['spacePurchase']!=NULL && $row2['printingCost']==NULL)
+		<div class='transaction_total'>
+			<table class="total_table" rules="all" >
+				<tr><td>收入編號</td><td>購買人</td><td>購買類型</td><td>金額</td><td>付款狀態</td><td>付款時間</td><td>匯款後五碼</td></tr>
+				<?php
+					while($row2= mysqli_fetch_assoc($result2))
+					{		
+						echo "<tr><td>".$row2['serialNumber']."</td>";
+							if($row2['memberNo']!=NULL && $row2['ads_purchaseNo']==NULL && $row2['print_authorizationNo']==NULL)
 							{
-								if($row2['paymentStatus']==0)
+								$sql5="SELECT Nickname FROM member WHERE memberNo = '$row2[memberNo]'";
+								$result5=$db->query($link,$sql5);
+								$Nickname=mysqli_fetch_assoc($result5);		
+								echo "<td>".$Nickname['Nickname']."</td>";	
+								if($row2['spacePurchase']!=NULL && $row2['printingCost']==NULL)
 								{
-									echo "<td>空間購買</td><td>$".$row2['spacePurchase']."</td><td>未付款</td><td></td><td></td></tr>";
+									if($row2['paymentStatus']==0)
+									{
+										echo "<td>空間購買</td><td>$".$row2['spacePurchase']."</td><td>未付款</td><td></td><td></td></tr>";
+									}
+									else
+									{
+										echo "<td>空間購買</td><td>$".$row2['spacePurchase']."</td><td>已付款</td><td>".$row2['paymentTime']."</td><td>".$row2['transferafterfiveYards']."</td></tr>";
+									}
+								}
+								else if ($row2['spacePurchase']==NULL && $row2['printingCost']!=NULL)
+								{
+									if($row2['paymentStatus']==0)
+									{
+										echo "<td>列印費用</td><td>$".$row2['printingCost']."</td><td>未付款</td><td></td><td></td></tr>";
+									}
+									else
+									{
+										echo  "<td>列印費用</td><td>$".$row2['printingCost']."</td><td>已付款</td><td>".$row2['paymentTime']."</td><td>".$row2['transferafterfiveYards']."</td></tr>";
+									}
+								}
+									
+							}
+							else if ($row2['memberNo']==NULL && $row2['ads_purchaseNo']!=NULL && $row2['print_authorizationNo']==NULL)
+							{
+								$sql4="SELECT member.* FROM member,ads_purchase WHERE purchaseNo='$row2[ads_purchaseNo]' AND ads_purchase.buyerNo=member.memberNo";
+								$result4=$db->query($link,$sql4);
+								$adsBuyer= mysqli_fetch_assoc($result4);
+								if($row2['paymentStatus']==0)	
+								{
+									echo "<td>".$adsBuyer['Nickname']."</td><td>廣告購買</td><td>$".$row2['adsPurchase']."</td><td>未付款</td><td></td><td></td></tr>";
 								}
 								else
 								{
-									echo "<td>空間購買</td><td>$".$row2['spacePurchase']."</td><td>已付款</td><td>".$row2['paymentTime']."</td><td>".$row2['transferafterfiveYards']."</td></tr>";
+									echo   "<td>".$adsBuyer['Nickname']."</td><td>廣告購買</td><td>$".$row2['adsPurchase']."</td><td>已付款</td><td>".$row2['paymentTime']."</td><td>".$row2['transferafterfiveYards']."</td></tr>";
 								}
 							}
-							else if ($row2['spacePurchase']==NULL && $row2['printingCost']!=NULL)
+							else if ($row2['memberNo']==NULL && $row2['ads_purchaseNo']==NULL && $row2['print_authorizationNo']!=NULL)
 							{
+								$sql6="SELECT member.* FROM member,print_authorization WHERE printauthorizationNo='$row2[print_authorizationNo]' AND print_authorization.Purchaser=member.memberNo";
+								$result6=$db->query($link,$sql6);
+								$adsBuyer= mysqli_fetch_assoc($result6);	
 								if($row2['paymentStatus']==0)
 								{
-									echo "<td>列印費用</td><td>$".$row2['printingCost']."</td><td>未付款</td><td></td><td></td></tr>";
+									echo "<td>".$adsBuyer['Nickname']."</td><td>列印授權佣金</td><td>$".$row2['printauthorizeCommission']."</td><td>未付款</td><td></td><td></td></tr>";
 								}
 								else
 								{
-									echo  "<td>列印費用</td><td>$".$row2['printingCost']."</td><td>已付款</td><td>".$row2['paymentTime']."</td><td>".$row2['transferafterfiveYards']."</td></tr>";
+									echo "<td>".$adsBuyer['Nickname']."</td><td>列印授權佣金</td><td>$".$row2['printauthorizeCommission']."</td><td>已付款</td><td>".$row2['paymentTime']."</td><td>".$row2['transferafterfiveYards']."</td></tr>";
 								}
 							}
-								
-						}
-						else if ($row2['memberNo']==NULL && $row2['ads_purchaseNo']!=NULL && $row2['print_authorizationNo']==NULL)
-						{
-							$sql4="SELECT member.* FROM member,ads_purchase WHERE purchaseNo='$row2[ads_purchaseNo]' AND ads_purchase.buyerNo=member.memberNo";
-							$result4=$db->query($link,$sql4);
-							$adsBuyer= mysqli_fetch_assoc($result4);
-							if($row2['paymentStatus']==0)	
-							{
-								echo "<td>".$adsBuyer['Nickname']."</td><td>廣告購買</td><td>$".$row2['adsPurchase']."</td><td>未付款</td><td></td><td></td></tr>";
-							}
-							else
-							{
-								echo   "<td>".$adsBuyer['Nickname']."</td><td>廣告購買</td><td>$".$row2['adsPurchase']."</td><td>已付款</td><td>".$row2['paymentTime']."</td><td>".$row2['transferafterfiveYards']."</td></tr>";
-							}
-						}
-						else if ($row2['memberNo']==NULL && $row2['ads_purchaseNo']==NULL && $row2['print_authorizationNo']!=NULL)
-						{
-							$sql6="SELECT member.* FROM member,print_authorization WHERE printauthorizationNo='$row2[print_authorizationNo]' AND print_authorization.Purchaser=member.memberNo";
-							$result6=$db->query($link,$sql6);
-							$adsBuyer= mysqli_fetch_assoc($result6);	
-							if($row2['paymentStatus']==0)
-							{
-								echo "<td>".$adsBuyer['Nickname']."</td><td>列印授權佣金</td><td>$".$row2['printauthorizeCommission']."</td><td>未付款</td><td></td><td></td></tr>";
-							}
-							else
-							{
-								echo "<td>".$adsBuyer['Nickname']."</td><td>列印授權佣金</td><td>$".$row2['printauthorizeCommission']."</td><td>已付款</td><td>".$row2['paymentTime']."</td><td>".$row2['transferafterfiveYards']."</td></tr>";
-							}
-						}
-				}
+					}
 
-					
-			?>
-		</table>
-		<a href="total_edit.php" class="button1" >編輯</a>
+						
+				?>
+			</table>
+			<a href="total_edit.php" class="button1" >編輯</a>
+		</div>
 	</div>
 	<script type="text/javascript">
 

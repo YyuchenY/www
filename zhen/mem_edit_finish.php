@@ -17,10 +17,12 @@ $Password = $_POST['Password'];
 $Password2 = $_POST['Password2'];
 $Email = $_POST['Email'];
 $Nickname = $_POST['Nickname'];
-$Account = $_SESSION['Account'];
+$memberNo = $_SESSION['No'];
+//$Account = $_SESSION['Account'];
 $db=new DB();
 $link=$db->connect_db($_DB['host'],$_DB['username'],$_DB['password'],$_DB['dbname']);
-$sql = "UPDATE member SET Password='$Password', Email='$Email', Nickname='$Nickname' WHERE Account='$Account'";
+$sql = "UPDATE member SET Password='$Password', Email='$Email', Nickname='$Nickname' WHERE memberNo='$memberNo'";
+//$sql = "UPDATE member SET Password='$Password', Email='$Email', Nickname='$Nickname' WHERE Account='$Account'";
 $result = $db->query($link,$sql);        
 if($result){	
 	echo 'success';

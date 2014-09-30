@@ -17,7 +17,7 @@ function List(){
 			temp.next.previous = temp;
 			this.listEnd = temp;
 		}
-		this.listEnd.data = $("figure"+count);
+		this.listEnd.data = $(count);
 	}
 	
 }
