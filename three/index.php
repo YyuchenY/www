@@ -28,7 +28,7 @@
 				<div class='fixbarright' id='fixbarright'><img src='../img/fixbar_right.png'></div>
 			</div>
 		</div>
-		<script src="gcode-viewer/web/lib/modernizr.custom.93389.js"></script>
+		<script src="js/modernizr.custom.93389.js"></script>
 		<script src="js/drag.js"></script>
 		<script src="js/THREEx.GeometryUtils.js"></script>
 		<script src="js/ThreeText.js"></script>
@@ -147,11 +147,11 @@
 		</script>
 	
 	</body>
-	<script src="gcode-viewer/web/lib/jquery-1.7.1.min.js"></script>
+	<script src="js/jquery-1.7.1.min.js"></script>
 		
-		<script src="gcode-viewer/web/lib/bootstrap-modal.js"></script>
-		<script src="gcode-viewer/web/lib/sugar-1.2.4.min.js"></script>
-	<script src="gcode-viewer/web/gcode-parser.js"></script>
-	<script src="gcode-viewer/web/gcode-model.js"></script>
+		<script src="js/bootstrap-modal.js"></script>
+		<script src="js/sugar-1.2.4.min.js"></script>
+	<script src="js/gcode-parser.js"></script>
+	<script src="js/gcode-model.js"></script>
 	<script src="js/Ginit.js"></script>
 </html>
